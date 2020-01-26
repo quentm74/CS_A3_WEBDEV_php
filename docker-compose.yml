@@ -16,6 +16,18 @@ services:
       - ./app:/app
     networks:
       - code-network
+  mariadb:
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_DATABASE=librairie
+      - MYSQL_USER=webdev
+      - MYSQL_PASSWORD=webdev
+    ports:
+      - "3306:3306"
+    restart: always
+    networks:
+      - code-network
 
 networks:
   code-network:

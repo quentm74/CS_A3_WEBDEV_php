@@ -11,3 +11,5 @@ PORT=8080
 ```shell script
 sudo docker-compose up
 ```
+
+Then, runs one the bdlibraries.sql into mariaDB.
