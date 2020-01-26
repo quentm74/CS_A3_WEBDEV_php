@@ -4,6 +4,7 @@ module.exports = {
     'postcss-modules': {
       globalModulePaths: [
         'src/style/emoji.css',
+        'src/style/main.css',
       ]
     }
   }
