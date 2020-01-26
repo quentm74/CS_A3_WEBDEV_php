@@ -7,18 +7,21 @@ import {theme} from "./utils/theme";
 import {history} from "./utils/history";
 import {Switch} from "react-router";
 import {App} from "./components/App/App";
-import {store} from "./redux/store";
+import {store, persistor} from "./redux/store";
+import {PersistGate} from 'redux-persist/integration/react'
 import {SignIn} from "./components/SignIn/SignIn";
 import {SignUp} from "./components/SignUp/SignUp";
 
 export default () => {
   return (
     <Provider store={store}>
-      <MuiThemeProvider theme={theme}>
-        <ConnectedRouter history={history}>
-          <Switcher/>
-        </ConnectedRouter>
-      </MuiThemeProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <MuiThemeProvider theme={theme}>
+          <ConnectedRouter history={history}>
+            <Switcher/>
+          </ConnectedRouter>
+        </MuiThemeProvider>
+      </PersistGate>
     </Provider>
   );
 }

@@ -21,7 +21,7 @@ const updateUser = (id, first_name, last_name, address, bookseller) => ({
 });
 
 export const signIn = (id, password) => {
-  return (dispatch, getState) => {
+  return (dispatch, _) => {
     dispatch(updateLoadingStatus(loadingStatus.LOADING));
     api.post("/sign-in.php", {
       id,
@@ -37,14 +37,22 @@ export const signIn = (id, password) => {
   };
 };
 
-export const userReducer = (state = {
+export const signOut = () => {
+  return (dispatch, _) => {
+    dispatch(updateUser(initState.id, initState.first_name, initState.last_name, initState.address, initState.bookseller));
+  };
+};
+
+const initState = {
   id: -1,
   first_name: "",
   last_name: "",
   address: "",
   bookseller: false,
   loading: loadingStatus.NOT_STARTED,
-}, action) => {
+};
+
+export const userReducer = (state = initState, action) => {
   switch (action.type) {
     case UPDATE_LOADING_STATUS:
       return {
@@ -58,7 +66,7 @@ export const userReducer = (state = {
         first_name: action.first_name,
         last_name: action.last_name,
         address: action.address,
-        bookseller: action.bookseller
+        bookseller: action.bookseller,
       };
   }
   return state;

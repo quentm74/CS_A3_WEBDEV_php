@@ -4,6 +4,8 @@ import {connectRouter, routerMiddleware} from 'connected-react-router';
 import {history} from "../utils/history";
 import {composeWithDevTools} from "redux-devtools-extension";
 import thunk from "redux-thunk";
+import {persistStore, persistReducer} from 'redux-persist';
+import storage from 'redux-persist/lib/storage'
 
 const loggingMiddleware = () => next => action => {
   const result = next(action);
@@ -13,7 +15,8 @@ const loggingMiddleware = () => next => action => {
 
 export let store = createStore(combineReducers({
   router: connectRouter(history),
-  user: userReducer,
+  user: persistReducer({key: 'user', storage}, userReducer),
 }), composeWithDevTools(applyMiddleware(thunk, loggingMiddleware, routerMiddleware(history)))
 );
 
+export let persistor = persistStore(store);
