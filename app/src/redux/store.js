@@ -1,7 +1,8 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import {userReducer} from "./user";
-import {connectRouter} from 'connected-react-router';
+import {connectRouter, routerMiddleware} from 'connected-react-router';
 import {history} from "../utils/history";
+import {composeWithDevTools} from "redux-devtools-extension";
 
 const loggingMiddleware = () => next => action => {
   const result = next(action);
@@ -10,8 +11,8 @@ const loggingMiddleware = () => next => action => {
 };
 
 export let store = createStore(combineReducers({
-    router: connectRouter(history),
-    user: userReducer,
-  }), applyMiddleware(loggingMiddleware),
+  router: connectRouter(history),
+  user: userReducer,
+}), composeWithDevTools(applyMiddleware(loggingMiddleware, routerMiddleware(history)))
 );
 

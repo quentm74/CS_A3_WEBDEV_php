@@ -87586,7 +87586,7 @@ var _colors = require("@material-ui/core/colors");
 
 var primary = _colors.grey[800];
 exports.primary = primary;
-var secondary = _colors.green[500];
+var secondary = _colors.purple[500];
 exports.secondary = secondary;
 var theme = (0, _core.createMuiTheme)({
   palette: {
@@ -87600,6 +87600,13 @@ var theme = (0, _core.createMuiTheme)({
   },
   typography: {
     useNextVariants: true
+  },
+  overrides: {
+    MuiLink: {
+      root: {
+        cursor: "pointer"
+      }
+    }
   }
 });
 exports.theme = theme;
@@ -89567,7 +89574,29 @@ var userReducer = function userReducer() {
 };
 
 exports.userReducer = userReducer;
-},{"../utils/api":"utils/api.js","../utils/consts":"utils/consts.js"}],"redux/store.js":[function(require,module,exports) {
+},{"../utils/api":"utils/api.js","../utils/consts":"utils/consts.js"}],"../node_modules/redux-devtools-extension/index.js":[function(require,module,exports) {
+"use strict";
+
+var compose = require('redux').compose;
+
+exports.__esModule = true;
+exports.composeWithDevTools = (
+  typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ :
+    function() {
+      if (arguments.length === 0) return undefined;
+      if (typeof arguments[0] === 'object') return compose;
+      return compose.apply(null, arguments);
+    }
+);
+
+exports.devToolsEnhancer = (
+  typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__ ?
+    window.__REDUX_DEVTOOLS_EXTENSION__ :
+    function() { return function(noop) { return noop; } }
+);
+
+},{"redux":"../node_modules/redux/es/redux.js"}],"redux/store.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -89583,6 +89612,8 @@ var _connectedReactRouter = require("connected-react-router");
 
 var _history = require("../utils/history");
 
+var _reduxDevtoolsExtension = require("redux-devtools-extension");
+
 var loggingMiddleware = function loggingMiddleware() {
   return function (next) {
     return function (action) {
@@ -89596,9 +89627,9 @@ var loggingMiddleware = function loggingMiddleware() {
 var store = (0, _redux.createStore)((0, _redux.combineReducers)({
   router: (0, _connectedReactRouter.connectRouter)(_history.history),
   user: _user.userReducer
-}), (0, _redux.applyMiddleware)(loggingMiddleware));
+}), (0, _reduxDevtoolsExtension.composeWithDevTools)((0, _redux.applyMiddleware)(loggingMiddleware, (0, _connectedReactRouter.routerMiddleware)(_history.history))));
 exports.store = store;
-},{"redux":"../node_modules/redux/es/redux.js","./user":"redux/user.js","connected-react-router":"../node_modules/connected-react-router/esm/index.js","../utils/history":"utils/history.js"}],"components/App/App.js":[function(require,module,exports) {
+},{"redux":"../node_modules/redux/es/redux.js","./user":"redux/user.js","connected-react-router":"../node_modules/connected-react-router/esm/index.js","../utils/history":"utils/history.js","redux-devtools-extension":"../node_modules/redux-devtools-extension/index.js"}],"components/App/App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -89621,15 +89652,91 @@ var App = function App() {
 };
 
 exports.App = App;
-},{"react":"../node_modules/react/index.js","./App.css":"components/App/App.css","../../redux/store":"redux/store.js"}],"components/SignIn/SignIn.css":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
+},{"react":"../node_modules/react/index.js","./App.css":"components/App/App.css","../../redux/store":"redux/store.js"}],"../node_modules/@babel/runtime/helpers/interopRequireDefault.js":[function(require,module,exports) {
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    "default": obj
+  };
+}
 
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-module.exports = {
-  "SignIn": "_SignIn_2f517"
-};
-},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/SignIn/SignIn.js":[function(require,module,exports) {
+module.exports = _interopRequireDefault;
+},{}],"../node_modules/@babel/runtime/helpers/extends.js":[function(require,module,exports) {
+function _extends() {
+  module.exports = _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+module.exports = _extends;
+},{}],"../node_modules/@material-ui/icons/utils/createSvgIcon.js":[function(require,module,exports) {
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = createSvgIcon;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _SvgIcon = _interopRequireDefault(require("@material-ui/core/SvgIcon"));
+
+function createSvgIcon(path, displayName) {
+  var Component = _react.default.memo(_react.default.forwardRef(function (props, ref) {
+    return _react.default.createElement(_SvgIcon.default, (0, _extends2.default)({
+      ref: ref
+    }, props), path);
+  }));
+
+  if ("development" !== 'production') {
+    Component.displayName = "".concat(displayName, "Icon");
+  }
+
+  Component.muiName = _SvgIcon.default.muiName;
+  return Component;
+}
+},{"@babel/runtime/helpers/interopRequireDefault":"../node_modules/@babel/runtime/helpers/interopRequireDefault.js","@babel/runtime/helpers/extends":"../node_modules/@babel/runtime/helpers/extends.js","react":"../node_modules/react/index.js","@material-ui/core/SvgIcon":"../node_modules/@material-ui/core/esm/SvgIcon/index.js"}],"../node_modules/@material-ui/icons/LockOutlined.js":[function(require,module,exports) {
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _createSvgIcon = _interopRequireDefault(require("./utils/createSvgIcon"));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.default.Fragment, null, _react.default.createElement("g", {
+  fill: "none"
+}, _react.default.createElement("path", {
+  d: "M0 0h24v24H0V0z"
+}), _react.default.createElement("path", {
+  d: "M0 0h24v24H0V0z",
+  opacity: ".87"
+})), _react.default.createElement("path", {
+  d: "M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"
+})), 'LockOutlined');
+
+exports.default = _default;
+},{"@babel/runtime/helpers/interopRequireDefault":"../node_modules/@babel/runtime/helpers/interopRequireDefault.js","react":"../node_modules/react/index.js","./utils/createSvgIcon":"../node_modules/@material-ui/icons/utils/createSvgIcon.js"}],"components/SignIn/SignIn.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -89639,20 +89746,249 @@ exports.SignIn = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _SignIn = _interopRequireDefault(require("./SignIn.css"));
+var _Avatar = _interopRequireDefault(require("@material-ui/core/Avatar"));
 
-require("../../redux/store");
+var _Button = _interopRequireDefault(require("@material-ui/core/Button"));
+
+var _CssBaseline = _interopRequireDefault(require("@material-ui/core/CssBaseline"));
+
+var _TextField = _interopRequireDefault(require("@material-ui/core/TextField"));
+
+var _Link = _interopRequireDefault(require("@material-ui/core/Link"));
+
+var _Grid = _interopRequireDefault(require("@material-ui/core/Grid"));
+
+var _LockOutlined = _interopRequireDefault(require("@material-ui/icons/LockOutlined"));
+
+var _Typography = _interopRequireDefault(require("@material-ui/core/Typography"));
+
+var _styles = require("@material-ui/core/styles");
+
+var _Container = _interopRequireDefault(require("@material-ui/core/Container"));
+
+var _history = require("../../utils/history");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var useStyles = (0, _styles.makeStyles)(function (theme) {
+  return {
+    paper: {
+      marginTop: theme.spacing(8),
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
+    },
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.secondary.main
+    },
+    form: {
+      width: '100%',
+      marginTop: theme.spacing(1)
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2)
+    }
+  };
+});
+
 var SignIn = function SignIn() {
-  return _react.default.createElement("div", {
-    className: _SignIn.default.SignIn
-  }, _react.default.createElement("h1", null, "SignIn"));
+  var classes = useStyles();
+  return _react.default.createElement(_Container.default, {
+    component: "main",
+    maxWidth: "xs"
+  }, _react.default.createElement(_CssBaseline.default, null), _react.default.createElement("div", {
+    className: classes.paper
+  }, _react.default.createElement(_Avatar.default, {
+    className: classes.avatar
+  }, _react.default.createElement(_LockOutlined.default, null)), _react.default.createElement(_Typography.default, {
+    component: "h1",
+    variant: "h5"
+  }, "Sign in"), _react.default.createElement("form", {
+    className: classes.form,
+    noValidate: true
+  }, _react.default.createElement(_TextField.default, {
+    variant: "outlined",
+    margin: "normal",
+    required: true,
+    fullWidth: true,
+    id: "email",
+    label: "Email Address",
+    name: "email",
+    autoComplete: "email",
+    autoFocus: true
+  }), _react.default.createElement(_TextField.default, {
+    variant: "outlined",
+    margin: "normal",
+    required: true,
+    fullWidth: true,
+    name: "password",
+    label: "Password",
+    type: "password",
+    id: "password",
+    autoComplete: "current-password"
+  }), _react.default.createElement(_Button.default, {
+    type: "submit",
+    fullWidth: true,
+    variant: "contained",
+    color: "primary",
+    className: classes.submit
+  }, "Sign In"), _react.default.createElement(_Grid.default, {
+    container: true
+  }, _react.default.createElement(_Grid.default, {
+    item: true
+  }, _react.default.createElement(_Link.default, {
+    onClick: function onClick() {
+      return _history.history.push("/sign-up");
+    },
+    variant: "body2"
+  }, "Don't have an account? Sign Up"))))));
 };
 
 exports.SignIn = SignIn;
-},{"react":"../node_modules/react/index.js","./SignIn.css":"components/SignIn/SignIn.css","../../redux/store":"redux/store.js"}],"Root.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","@material-ui/core/Avatar":"../node_modules/@material-ui/core/esm/Avatar/index.js","@material-ui/core/Button":"../node_modules/@material-ui/core/esm/Button/index.js","@material-ui/core/CssBaseline":"../node_modules/@material-ui/core/esm/CssBaseline/index.js","@material-ui/core/TextField":"../node_modules/@material-ui/core/esm/TextField/index.js","@material-ui/core/Link":"../node_modules/@material-ui/core/esm/Link/index.js","@material-ui/core/Grid":"../node_modules/@material-ui/core/esm/Grid/index.js","@material-ui/icons/LockOutlined":"../node_modules/@material-ui/icons/LockOutlined.js","@material-ui/core/Typography":"../node_modules/@material-ui/core/esm/Typography/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Container":"../node_modules/@material-ui/core/esm/Container/index.js","../../utils/history":"utils/history.js"}],"components/SignUp/SignUp.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SignUp = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _Avatar = _interopRequireDefault(require("@material-ui/core/Avatar"));
+
+var _Button = _interopRequireDefault(require("@material-ui/core/Button"));
+
+var _CssBaseline = _interopRequireDefault(require("@material-ui/core/CssBaseline"));
+
+var _TextField = _interopRequireDefault(require("@material-ui/core/TextField"));
+
+var _Link = _interopRequireDefault(require("@material-ui/core/Link"));
+
+var _Grid = _interopRequireDefault(require("@material-ui/core/Grid"));
+
+var _LockOutlined = _interopRequireDefault(require("@material-ui/icons/LockOutlined"));
+
+var _Typography = _interopRequireDefault(require("@material-ui/core/Typography"));
+
+var _styles = require("@material-ui/core/styles");
+
+var _Container = _interopRequireDefault(require("@material-ui/core/Container"));
+
+var _history = require("../../utils/history");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var useStyles = (0, _styles.makeStyles)(function (theme) {
+  return {
+    paper: {
+      marginTop: theme.spacing(8),
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
+    },
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.secondary.main
+    },
+    form: {
+      width: '100%',
+      marginTop: theme.spacing(3)
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2)
+    }
+  };
+});
+
+var SignUp = function SignUp() {
+  var classes = useStyles();
+  return _react.default.createElement(_Container.default, {
+    component: "main",
+    maxWidth: "xs"
+  }, _react.default.createElement(_CssBaseline.default, null), _react.default.createElement("div", {
+    className: classes.paper
+  }, _react.default.createElement(_Avatar.default, {
+    className: classes.avatar
+  }, _react.default.createElement(_LockOutlined.default, null)), _react.default.createElement(_Typography.default, {
+    component: "h1",
+    variant: "h5"
+  }, "Sign up"), _react.default.createElement("form", {
+    className: classes.form,
+    noValidate: true
+  }, _react.default.createElement(_Grid.default, {
+    container: true,
+    spacing: 2
+  }, _react.default.createElement(_Grid.default, {
+    item: true,
+    xs: 12,
+    sm: 6
+  }, _react.default.createElement(_TextField.default, {
+    autoComplete: "fname",
+    name: "firstName",
+    variant: "outlined",
+    required: true,
+    fullWidth: true,
+    id: "firstName",
+    label: "First Name",
+    autoFocus: true
+  })), _react.default.createElement(_Grid.default, {
+    item: true,
+    xs: 12,
+    sm: 6
+  }, _react.default.createElement(_TextField.default, {
+    variant: "outlined",
+    required: true,
+    fullWidth: true,
+    id: "lastName",
+    label: "Last Name",
+    name: "lastName",
+    autoComplete: "lname"
+  })), _react.default.createElement(_Grid.default, {
+    item: true,
+    xs: 12
+  }, _react.default.createElement(_TextField.default, {
+    variant: "outlined",
+    required: true,
+    fullWidth: true,
+    id: "address",
+    label: "Address",
+    name: "address",
+    autoComplete: "address"
+  })), _react.default.createElement(_Grid.default, {
+    item: true,
+    xs: 12
+  }, _react.default.createElement(_TextField.default, {
+    variant: "outlined",
+    required: true,
+    fullWidth: true,
+    name: "password",
+    label: "Password",
+    type: "password",
+    id: "password",
+    autoComplete: "current-password"
+  }))), _react.default.createElement(_Button.default, {
+    type: "submit",
+    fullWidth: true,
+    variant: "contained",
+    color: "primary",
+    className: classes.submit
+  }, "Sign Up"), _react.default.createElement(_Grid.default, {
+    container: true,
+    justify: "flex-end"
+  }, _react.default.createElement(_Grid.default, {
+    item: true
+  }, _react.default.createElement(_Link.default, {
+    onClick: function onClick() {
+      return _history.history.push("/");
+    },
+    variant: "body2"
+  }, "Already have an account? Sign in"))))));
+};
+
+exports.SignUp = SignUp;
+},{"react":"../node_modules/react/index.js","@material-ui/core/Avatar":"../node_modules/@material-ui/core/esm/Avatar/index.js","@material-ui/core/Button":"../node_modules/@material-ui/core/esm/Button/index.js","@material-ui/core/CssBaseline":"../node_modules/@material-ui/core/esm/CssBaseline/index.js","@material-ui/core/TextField":"../node_modules/@material-ui/core/esm/TextField/index.js","@material-ui/core/Link":"../node_modules/@material-ui/core/esm/Link/index.js","@material-ui/core/Grid":"../node_modules/@material-ui/core/esm/Grid/index.js","@material-ui/icons/LockOutlined":"../node_modules/@material-ui/icons/LockOutlined.js","@material-ui/core/Typography":"../node_modules/@material-ui/core/esm/Typography/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Container":"../node_modules/@material-ui/core/esm/Container/index.js","../../utils/history":"utils/history.js"}],"Root.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -89660,7 +89996,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _reactRedux = require("react-redux");
 
@@ -89682,7 +90018,11 @@ var _store = require("./redux/store");
 
 var _SignIn = require("./components/SignIn/SignIn");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _SignUp = require("./components/SignUp/SignUp");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 var _default = function _default() {
   return _react.default.createElement(_reactRedux.Provider, {
@@ -89697,6 +90037,9 @@ var _default = function _default() {
 exports.default = _default;
 
 var Switcher = function Switcher() {
+  // useEffect(() => {
+  //   history.push("/sign-up");
+  // }, []);
   var isLoggedIn = (0, _reactRedux.useSelector)(function (state) {
     return state.user.id;
   }) !== -1;
@@ -89720,6 +90063,10 @@ var Switcher = function Switcher() {
 
 var DefaultRoutes = function DefaultRoutes() {
   return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_reactRouterDom.Route, {
+    path: "/sign-up",
+    component: _SignUp.SignUp
+  }), _react.default.createElement(_reactRouterDom.Route, {
+    exact: true,
     path: "/",
     component: _SignIn.SignIn
   }));
@@ -89738,7 +90085,7 @@ var BookSellerRoutes = function BookSellerRoutes() {
     component: _App.App
   }));
 };
-},{"react":"../node_modules/react/index.js","react-redux":"../node_modules/react-redux/es/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","connected-react-router":"../node_modules/connected-react-router/esm/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js","./utils/theme":"utils/theme.js","./utils/history":"utils/history.js","react-router":"../node_modules/react-router/esm/react-router.js","./components/App/App":"components/App/App.js","./redux/store":"redux/store.js","./components/SignIn/SignIn":"components/SignIn/SignIn.js"}],"index.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-redux":"../node_modules/react-redux/es/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","connected-react-router":"../node_modules/connected-react-router/esm/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js","./utils/theme":"utils/theme.js","./utils/history":"utils/history.js","react-router":"../node_modules/react-router/esm/react-router.js","./components/App/App":"components/App/App.js","./redux/store":"redux/store.js","./components/SignIn/SignIn":"components/SignIn/SignIn.js","./components/SignUp/SignUp":"components/SignUp/SignUp.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -89780,7 +90127,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35033" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43869" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

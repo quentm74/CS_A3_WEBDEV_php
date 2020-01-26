@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Provider, useSelector} from "react-redux";
 import {Route} from 'react-router-dom';
 import {ConnectedRouter} from 'connected-react-router';
@@ -9,6 +9,7 @@ import {Switch} from "react-router";
 import {App} from "./components/App/App";
 import {store} from "./redux/store";
 import {SignIn} from "./components/SignIn/SignIn";
+import {SignUp} from "./components/SignUp/SignUp";
 
 export default () => {
   return (
@@ -23,6 +24,10 @@ export default () => {
 }
 
 const Switcher = () => {
+
+  // useEffect(() => {
+  //   history.push("/sign-up");
+  // }, []);
 
   const isLoggedIn = useSelector(state => state.user.id) !== -1;
   const isBookSeller = useSelector(state => state.user.bookseller);
@@ -47,7 +52,8 @@ const Switcher = () => {
 
 const DefaultRoutes = () => (
   <React.Fragment>
-    <Route path="/" component={SignIn}/>
+    <Route path="/sign-up" component={SignUp}/>
+    <Route exact={true} path="/" component={SignIn}/>
   </React.Fragment>
 );
 

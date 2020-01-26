@@ -1,8 +1,8 @@
 import {createMuiTheme} from "@material-ui/core";
-import {grey, green, common} from "@material-ui/core/colors";
+import {grey, green, common, red, purple} from "@material-ui/core/colors";
 
 const primary = grey[800];
-const secondary = green[500];
+const secondary = purple[500];
 
 const theme = createMuiTheme({
   palette: {
@@ -15,6 +15,13 @@ const theme = createMuiTheme({
     },
   },
   typography: {useNextVariants: true},
+  overrides: {
+    MuiLink: {
+      root: {
+        cursor: "pointer",
+      },
+    },
+  },
 });
 
 export {
