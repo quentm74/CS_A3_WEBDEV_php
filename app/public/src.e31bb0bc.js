@@ -89486,15 +89486,25 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.responseTypes = exports.post = void 0;
 
-var _axios = require("axios");
+var _axios = _interopRequireDefault(require("axios"));
 
 var _consts = require("./consts");
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var instance = _axios.default.create({
+  baseURL: _consts.API_BASE_URL,
+  timeout: 1000,
+  headers: {}
+});
+
 var post = function post(url, data, onSuccess, onError) {
-  _axios.AxiosInstance.post(_consts.API_BASE_URL + url, data).then(function (response) {
-    console.log(response);
+  instance.post(url, data).then(function (response) {
+    console.log("[API] [SUCCESS]", response);
+    onSuccess(response.data);
   }).catch(function (error) {
-    console.log(error);
+    console.log("[API] [ERROR]", error);
+    onError(error);
   });
 };
 
@@ -89516,6 +89526,8 @@ var api = _interopRequireWildcard(require("../utils/api"));
 
 var _consts = require("../utils/consts");
 
+var _reactRedux = require("react-redux");
+
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -89536,14 +89548,30 @@ var updateLoadingStatus = function updateLoadingStatus(status) {
   };
 };
 
+var UPDATE_USER = prefix + 'UPDATE_USER';
+
+var updateUser = function updateUser(id, first_name, last_name, address, bookseller) {
+  return {
+    type: UPDATE_USER,
+    id: id,
+    first_name: first_name,
+    last_name: last_name,
+    address: address,
+    bookseller: bookseller
+  };
+};
+
 var signIn = function signIn(id, password) {
   return function (dispatch, getState) {
     dispatch(updateLoadingStatus(_consts.loadingStatus.LOADING));
-    api.post("/signIn", {
+    api.post("/sign-in.php", {
       id: id,
       password: password
-    }, function () {
-      dispatch(updateLoadingStatus(_consts.loadingStatus.SUCCESS));
+    }, function (data) {
+      (0, _reactRedux.batch)(function () {
+        dispatch(updateLoadingStatus(_consts.loadingStatus.SUCCESS));
+        dispatch(updateUser(data.id, data.first_name, data.last_name, data.address, data.bookseller));
+      });
     }, function () {
       dispatch(updateLoadingStatus(_consts.loadingStatus.ERROR));
     });
@@ -89568,13 +89596,22 @@ var userReducer = function userReducer() {
       return _objectSpread({}, state, {
         loading: action.status
       });
+
+    case UPDATE_USER:
+      return _objectSpread({}, state, {
+        id: action.id,
+        first_name: action.first_name,
+        last_name: action.last_name,
+        address: action.address,
+        bookseller: action.bookseller
+      });
   }
 
   return state;
 };
 
 exports.userReducer = userReducer;
-},{"../utils/api":"utils/api.js","../utils/consts":"utils/consts.js"}],"../node_modules/redux-devtools-extension/index.js":[function(require,module,exports) {
+},{"../utils/api":"utils/api.js","../utils/consts":"utils/consts.js","react-redux":"../node_modules/react-redux/es/index.js"}],"../node_modules/redux-devtools-extension/index.js":[function(require,module,exports) {
 "use strict";
 
 var compose = require('redux').compose;
@@ -89596,7 +89633,35 @@ exports.devToolsEnhancer = (
     function() { return function(noop) { return noop; } }
 );
 
-},{"redux":"../node_modules/redux/es/redux.js"}],"redux/store.js":[function(require,module,exports) {
+},{"redux":"../node_modules/redux/es/redux.js"}],"../node_modules/redux-thunk/es/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function createThunkMiddleware(extraArgument) {
+  return function (_ref) {
+    var dispatch = _ref.dispatch,
+        getState = _ref.getState;
+    return function (next) {
+      return function (action) {
+        if (typeof action === 'function') {
+          return action(dispatch, getState, extraArgument);
+        }
+
+        return next(action);
+      };
+    };
+  };
+}
+
+var thunk = createThunkMiddleware();
+thunk.withExtraArgument = createThunkMiddleware;
+var _default = thunk;
+exports.default = _default;
+},{}],"redux/store.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -89614,6 +89679,10 @@ var _history = require("../utils/history");
 
 var _reduxDevtoolsExtension = require("redux-devtools-extension");
 
+var _reduxThunk = _interopRequireDefault(require("redux-thunk"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var loggingMiddleware = function loggingMiddleware() {
   return function (next) {
     return function (action) {
@@ -89627,9 +89696,9 @@ var loggingMiddleware = function loggingMiddleware() {
 var store = (0, _redux.createStore)((0, _redux.combineReducers)({
   router: (0, _connectedReactRouter.connectRouter)(_history.history),
   user: _user.userReducer
-}), (0, _reduxDevtoolsExtension.composeWithDevTools)((0, _redux.applyMiddleware)(loggingMiddleware, (0, _connectedReactRouter.routerMiddleware)(_history.history))));
+}), (0, _reduxDevtoolsExtension.composeWithDevTools)((0, _redux.applyMiddleware)(_reduxThunk.default, loggingMiddleware, (0, _connectedReactRouter.routerMiddleware)(_history.history))));
 exports.store = store;
-},{"redux":"../node_modules/redux/es/redux.js","./user":"redux/user.js","connected-react-router":"../node_modules/connected-react-router/esm/index.js","../utils/history":"utils/history.js","redux-devtools-extension":"../node_modules/redux-devtools-extension/index.js"}],"components/App/App.js":[function(require,module,exports) {
+},{"redux":"../node_modules/redux/es/redux.js","./user":"redux/user.js","connected-react-router":"../node_modules/connected-react-router/esm/index.js","../utils/history":"utils/history.js","redux-devtools-extension":"../node_modules/redux-devtools-extension/index.js","redux-thunk":"../node_modules/redux-thunk/es/index.js"}],"components/App/App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -89744,7 +89813,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SignIn = void 0;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _Avatar = _interopRequireDefault(require("@material-ui/core/Avatar"));
 
@@ -89768,7 +89837,23 @@ var _Container = _interopRequireDefault(require("@material-ui/core/Container"));
 
 var _history = require("../../utils/history");
 
+var _reactRedux = require("react-redux");
+
+var _user = require("../../redux/user");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var useStyles = (0, _styles.makeStyles)(function (theme) {
   return {
@@ -89794,6 +89879,18 @@ var useStyles = (0, _styles.makeStyles)(function (theme) {
 
 var SignIn = function SignIn() {
   var classes = useStyles();
+  var dispatch = (0, _reactRedux.useDispatch)();
+
+  var _useState = (0, _react.useState)(""),
+      _useState2 = _slicedToArray(_useState, 2),
+      id = _useState2[0],
+      setId = _useState2[1];
+
+  var _useState3 = (0, _react.useState)(""),
+      _useState4 = _slicedToArray(_useState3, 2),
+      password = _useState4[0],
+      setPassword = _useState4[1];
+
   return _react.default.createElement(_Container.default, {
     component: "main",
     maxWidth: "xs"
@@ -89806,17 +89903,25 @@ var SignIn = function SignIn() {
     variant: "h5"
   }, "Sign in"), _react.default.createElement("form", {
     className: classes.form,
-    noValidate: true
+    noValidate: true,
+    onSubmit: function onSubmit(e) {
+      e.preventDefault();
+      dispatch((0, _user.signIn)(id, password));
+    }
   }, _react.default.createElement(_TextField.default, {
     variant: "outlined",
     margin: "normal",
     required: true,
     fullWidth: true,
-    id: "email",
-    label: "Email Address",
-    name: "email",
-    autoComplete: "email",
-    autoFocus: true
+    id: "id",
+    label: "Id",
+    name: "id",
+    autoComplete: "id",
+    autoFocus: true,
+    value: id,
+    onChange: function onChange(e) {
+      return setId(e.target.value);
+    }
   }), _react.default.createElement(_TextField.default, {
     variant: "outlined",
     margin: "normal",
@@ -89826,7 +89931,11 @@ var SignIn = function SignIn() {
     label: "Password",
     type: "password",
     id: "password",
-    autoComplete: "current-password"
+    autoComplete: "current-password",
+    value: password,
+    onChange: function onChange(e) {
+      return setPassword(e.target.value);
+    }
   }), _react.default.createElement(_Button.default, {
     type: "submit",
     fullWidth: true,
@@ -89846,7 +89955,7 @@ var SignIn = function SignIn() {
 };
 
 exports.SignIn = SignIn;
-},{"react":"../node_modules/react/index.js","@material-ui/core/Avatar":"../node_modules/@material-ui/core/esm/Avatar/index.js","@material-ui/core/Button":"../node_modules/@material-ui/core/esm/Button/index.js","@material-ui/core/CssBaseline":"../node_modules/@material-ui/core/esm/CssBaseline/index.js","@material-ui/core/TextField":"../node_modules/@material-ui/core/esm/TextField/index.js","@material-ui/core/Link":"../node_modules/@material-ui/core/esm/Link/index.js","@material-ui/core/Grid":"../node_modules/@material-ui/core/esm/Grid/index.js","@material-ui/icons/LockOutlined":"../node_modules/@material-ui/icons/LockOutlined.js","@material-ui/core/Typography":"../node_modules/@material-ui/core/esm/Typography/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Container":"../node_modules/@material-ui/core/esm/Container/index.js","../../utils/history":"utils/history.js"}],"components/SignUp/SignUp.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","@material-ui/core/Avatar":"../node_modules/@material-ui/core/esm/Avatar/index.js","@material-ui/core/Button":"../node_modules/@material-ui/core/esm/Button/index.js","@material-ui/core/CssBaseline":"../node_modules/@material-ui/core/esm/CssBaseline/index.js","@material-ui/core/TextField":"../node_modules/@material-ui/core/esm/TextField/index.js","@material-ui/core/Link":"../node_modules/@material-ui/core/esm/Link/index.js","@material-ui/core/Grid":"../node_modules/@material-ui/core/esm/Grid/index.js","@material-ui/icons/LockOutlined":"../node_modules/@material-ui/icons/LockOutlined.js","@material-ui/core/Typography":"../node_modules/@material-ui/core/esm/Typography/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Container":"../node_modules/@material-ui/core/esm/Container/index.js","../../utils/history":"utils/history.js","react-redux":"../node_modules/react-redux/es/index.js","../../redux/user":"redux/user.js"}],"components/SignUp/SignUp.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -90127,7 +90236,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43869" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39421" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

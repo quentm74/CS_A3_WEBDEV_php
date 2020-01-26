@@ -10,4 +10,16 @@ class CustomError {
     }
 }
 
-$error_404 = json_encode(new CustomError(404, "Lost?"));
+function error_not_found() {
+    header('Content-type: text/plain');
+    echo json_encode(new CustomError(404, "Lost?"));
+    die();
+}
+
+function error_missing_parameter($parameter) {
+    header('Content-type: text/plain');
+    echo json_encode(new CustomError(400, sprintf("Missing argument %s", $parameter)));
+    die();
+}
+
+
