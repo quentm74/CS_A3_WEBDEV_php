@@ -6,7 +6,7 @@ import {ThemeProvider as MuiThemeProvider} from '@material-ui/core/styles';
 import {theme} from "./utils/theme";
 import {history} from "./utils/history";
 import {Switch} from "react-router";
-import {App} from "./components/App/App";
+import {AppClient} from "./components/AppClient/AppClient";
 import {store, persistor} from "./redux/store";
 import {PersistGate} from 'redux-persist/integration/react'
 import {SignIn} from "./components/SignIn/SignIn";
@@ -62,12 +62,12 @@ const DefaultRoutes = () => (
 
 const ClientRoutes = () => (
   <React.Fragment>
-    <Route path="/" component={App}/>
+    <Route path="/" component={AppClient}/>
   </React.Fragment>
 );
 
 const BookSellerRoutes = () => (
   <React.Fragment>
-    <Route path="/" component={App}/>
+    <Route path="/" component={AppClient}/>
   </React.Fragment>
 );
