@@ -9,28 +9,27 @@ class CustomError {
         $this->msg = $msg;
     }
 
-    static function error_not_found() {
+    function perform() {
         header('Content-type: text/plain');
-        echo json_encode(new CustomError(404, "Lost?"));
+        http_response_code($this->code);
+        echo json_encode($this);
         die();
+    }
+
+    static function error_not_found() {
+        (new CustomError(404, "Lost?"))->perform();
     }
 
     static function error_missing_parameter($parameter) {
-        header('Content-type: text/plain');
-        echo json_encode(new CustomError(400, sprintf("Missing argument %s", $parameter)));
-        die();
+        (new CustomError(400, sprintf("Missing argument %s", $parameter)))->perform();
     }
 
     static function error_connection_database($e) {
-        header('Content-type: text/plain');
-        echo json_encode(new CustomError(400, sprintf("Could not connect to database : %s", $e)));
-        die();
+        (new CustomError(400, sprintf("Could not connect to database : %s", $e)))->perform();
     }
 
     static function error_wrong_credentials() {
-        header('Content-type: text/plain');
-        echo json_encode(new CustomError(400, "Wrong credentials"));
-        die();
+        (new CustomError(400, "Wrong credentials"))->perform();
     }
 }
 
