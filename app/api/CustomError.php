@@ -26,6 +26,12 @@ class CustomError {
         echo json_encode(new CustomError(400, sprintf("Could not connect to database : %s", $e)));
         die();
     }
+
+    static function error_wrong_credentials() {
+        header('Content-type: text/plain');
+        echo json_encode(new CustomError(400, "Wrong credentials"));
+        die();
+    }
 }
 
 

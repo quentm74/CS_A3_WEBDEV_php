@@ -9,19 +9,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = parameter($data, 'password');
 
     $userRepository = new UserRepository();
+    $user = $userRepository->get_by_id_and_password($id, $password);
 
-    // TODO verify and get user by its repository
+    if ($user != null) {
+        header('Content-type: application/json');
+        echo $user->toJson();
+        die();
+    }
 
-    $user = new User();
-    $user->id = 0;
-    $user->first_name = "Sacha";
-    $user->last_name = "Guitry";
-    $user->address = "Not far";
-    $user->bookseller = true;
-
-    header('Content-type: application/json');
-    echo $user->toJson();
+    CustomError::error_wrong_credentials();
 } else {
-    http_response_code(404);
+//    http_response_code(404);
     CustomError::error_not_found();
 }
