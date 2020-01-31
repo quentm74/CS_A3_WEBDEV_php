@@ -3,6 +3,7 @@ spl_autoload_register(function ($class_name) {
     $directories = array(
         '/app/api/',
         '/app/api/payloads/',
+        '/app/api/repositories/',
     );
 
     foreach($directories as $directory) {

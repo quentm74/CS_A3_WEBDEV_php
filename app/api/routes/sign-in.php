@@ -1,6 +1,5 @@
 <?php
 include '/app/api/autoload.php';
-include '/app/api/errors.php';
 include '/app/api/tools.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -8,6 +7,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $id = parameter($data, 'id');
     $password = parameter($data, 'password');
+
+    $userRepository = new UserRepository();
 
     // TODO verify and get user by its repository
 
@@ -22,5 +23,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo $user->toJson();
 } else {
     http_response_code(404);
-    error_not_found();
+    CustomError::error_not_found();
 }

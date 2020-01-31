@@ -21,9 +21,9 @@ class CustomError {
         die();
     }
 
-    static function error_connection_database() {
+    static function error_connection_database($e) {
         header('Content-type: text/plain');
-        echo json_encode(new CustomError(400, "Could not connect to database"));
+        echo json_encode(new CustomError(400, sprintf("Could not connect to database : %s", $e)));
         die();
     }
 }
