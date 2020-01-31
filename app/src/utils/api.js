@@ -7,6 +7,20 @@ const instance = axios.create({
   headers: {},
 });
 
+export const get = (url, onSuccess, onError) => {
+  instance.get(url)
+    .then((response) => {
+      console.log("[API] [SUCCESS]", response);
+      onSuccess(response.data);
+    })
+    .catch((error) => {
+      if (error.response) {
+        console.log("[API] [ERROR]", error.response);
+        onError(error.response);
+      }
+    });
+};
+
 export const post = (url, data, onSuccess, onError) => {
   instance.post(url, data)
     .then((response) => {

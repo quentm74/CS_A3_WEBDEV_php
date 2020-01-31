@@ -29,6 +29,8 @@ const initState = {
   sign_up_loading: loadingStatus.NOT_STARTED,
   sign_up_error: null,
   sign_up_msg: null,
+  load_books_loading: loadingStatus.NOT_STARTED,
+  load_books_error: null,
 };
 
 export const statusReducer = (state = initState, action) => {

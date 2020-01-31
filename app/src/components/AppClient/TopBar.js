@@ -11,6 +11,9 @@ import {MenuBook} from "@material-ui/icons";
 import {history} from "../../utils/history";
 
 const useStyles = makeStyles(theme => ({
+  bar: {
+    height: 64,
+  },
   menuButton: {
     marginRight: theme.spacing(1),
   },
@@ -31,7 +34,7 @@ export const TopBar = () => {
   const last_name = useSelector(state => state.user.last_name);
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" className={classes.bar}>
       <Toolbar>
         <IconButton onClick={() => history.push("/")} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
           <MenuBook fontSize="large"/>
