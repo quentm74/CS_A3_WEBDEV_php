@@ -10,7 +10,7 @@ class CustomError {
     }
 
     function perform() {
-        header('Content-type: text/plain');
+        header('Content-type: application/json');
         http_response_code($this->code);
         echo json_encode($this);
         die();
