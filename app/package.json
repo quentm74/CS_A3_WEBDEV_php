@@ -13,6 +13,7 @@
   "dependencies": {
     "@material-ui/core": "^4.9.0",
     "@material-ui/icons": "^4.5.1",
+    "@material-ui/lab": "^4.0.0-alpha.40",
     "app": "^0.1.0",
     "axios": "^0.19.2",
     "connected-react-router": "^6.6.1",

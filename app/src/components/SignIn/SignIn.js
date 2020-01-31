@@ -10,8 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {history} from "../../utils/history";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {signIn} from "../../redux/user";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -31,6 +32,10 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  alert: {
+    marginTop: theme.spacing(2),
+    width: '100%',
+  }
 }));
 
 export const SignIn = () => {
@@ -39,6 +44,8 @@ export const SignIn = () => {
 
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
+
+  const error_msg = useSelector(state => state.status.sign_in_error);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -50,6 +57,11 @@ export const SignIn = () => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
+        {error_msg !== null && (
+          <React.Fragment>
+            <Alert className={classes.alert} severity="error">{error_msg}</Alert>
+          </React.Fragment>
+        )}
         <form className={classes.form} noValidate onSubmit={(e) => {
           e.preventDefault();
           dispatch(signIn(id, password));

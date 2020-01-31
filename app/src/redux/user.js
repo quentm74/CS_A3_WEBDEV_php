@@ -1,14 +1,9 @@
 import * as api from "../utils/api";
 import {loadingStatus} from "../utils/consts";
 import {batch} from "react-redux";
+import {updateErrorStatus, updateLoadingStatus} from "./status";
 
 const prefix = "USER:";
-
-const UPDATE_LOADING_STATUS = prefix + "UPDATE_LOADING_STATUS";
-const updateLoadingStatus = (status) => ({
-  type: UPDATE_LOADING_STATUS,
-  status: status,
-});
 
 const UPDATE_USER = prefix + 'UPDATE_USER';
 const updateUser = (id, first_name, last_name, address, bookseller) => ({
@@ -22,17 +17,19 @@ const updateUser = (id, first_name, last_name, address, bookseller) => ({
 
 export const signIn = (id, password) => {
   return (dispatch, _) => {
-    dispatch(updateLoadingStatus(loadingStatus.LOADING));
+    dispatch(updateLoadingStatus('sign_in', loadingStatus.LOADING));
+    dispatch(updateErrorStatus('sign_in', null));
     api.post("/sign-in.php", {
       id,
       password,
     }, (data) => {
       batch(() => {
-        dispatch(updateLoadingStatus(loadingStatus.SUCCESS));
+        dispatch(updateLoadingStatus('sign_in', loadingStatus.SUCCESS));
         dispatch(updateUser(data.id, data.first_name, data.last_name, data.address, data.bookseller));
       });
-    }, () => {
-      dispatch(updateLoadingStatus(loadingStatus.ERROR));
+    }, (error) => {
+      dispatch(updateLoadingStatus('sign_in', loadingStatus.ERROR));
+      dispatch(updateErrorStatus('sign_in', error.data.msg));
     });
   };
 };
@@ -49,16 +46,10 @@ const initState = {
   last_name: "",
   address: "",
   bookseller: false,
-  loading: loadingStatus.NOT_STARTED,
 };
 
 export const userReducer = (state = initState, action) => {
   switch (action.type) {
-    case UPDATE_LOADING_STATUS:
-      return {
-        ...state,
-        loading: action.status,
-      };
     case UPDATE_USER:
       return {
         ...state,

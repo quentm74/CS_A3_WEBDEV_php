@@ -4,7 +4,7 @@ import {API_BASE_URL} from "./consts";
 const instance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 1000,
-  headers: {}
+  headers: {},
 });
 
 export const post = (url, data, onSuccess, onError) => {
@@ -14,8 +14,10 @@ export const post = (url, data, onSuccess, onError) => {
       onSuccess(response.data);
     })
     .catch((error) => {
-      console.log("[API] [ERROR]", error);
-      onError(error);
+      if (error.response) {
+        console.log("[API] [ERROR]", error.response);
+        onError(error.response);
+      }
     });
 };
 
