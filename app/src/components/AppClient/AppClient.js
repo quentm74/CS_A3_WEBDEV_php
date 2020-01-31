@@ -38,6 +38,16 @@ export const AppClient = () => {
     dispatch(loadBooks());
   }, []);
 
+  const maxNbOfDigits = books !== null ? books[books.length - 1]['id'].toString().length : 0;
+  const displayId = (id) => {
+    let display = '';
+    for (let i = 0; i < maxNbOfDigits; i++) {
+      display += '0';
+    }
+    display += id;
+    return display.slice(-maxNbOfDigits);
+  };
+
   return (
     <React.Fragment>
       <TopBar/>
@@ -46,7 +56,7 @@ export const AppClient = () => {
           <TableHead>
             <TableRow className={classes.firstRow}>
               <TableCell align="right"> </TableCell>
-              <TableCell align="right">
+              <TableCell align="left">
                 ID
               </TableCell>
               <TableCell align="left">
@@ -66,8 +76,8 @@ export const AppClient = () => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={book.id}>
                   <TableCell align="right"> </TableCell>
-                  <TableCell align="right">
-                    {book.id}
+                  <TableCell align="left">
+                    {displayId(book.id)}
                   </TableCell>
                   <TableCell align="left">
                     {book.title}
