@@ -22,4 +22,15 @@ class UserRepository extends Repository {
         $user->bookseller = $result['libraire'];
         return $user;
     }
+
+    public function insert_then_get_id($first_name, $last_name, $address, $password, $bookseller) {
+        $stmt = self::$pdo->prepare("INSERT INTO personnes (nom, prenom, adresse, password, libraire) VALUES (:last_name, :first_name, :address, :password, :bookseller);");
+        $stmt->bindParam(':last_name', $last_name);
+        $stmt->bindParam(':first_name', $first_name);
+        $stmt->bindParam(':address', $address);
+        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':bookseller', $bookseller);
+        $stmt->execute();
+        return self::$pdo->lastInsertId();
+    }
 }

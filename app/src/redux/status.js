@@ -16,10 +16,19 @@ export const updateErrorStatus = (section, status) => ({
   status: status,
 });
 
+const UPDATE_MSG_STATUS = prefix + "UPDATE_MSG_STATUS";
+export const updateMsgStatus = (section, status) => ({
+  type: UPDATE_MSG_STATUS,
+  section: section,
+  status: status,
+});
 
 const initState = {
   sign_in_loading: loadingStatus.NOT_STARTED,
   sign_in_error: null,
+  sign_up_loading: loadingStatus.NOT_STARTED,
+  sign_up_error: null,
+  sign_up_msg: null,
 };
 
 export const statusReducer = (state = initState, action) => {
@@ -32,6 +41,10 @@ export const statusReducer = (state = initState, action) => {
       let updated_state_error = state;
       updated_state_error[action.section + '_error'] = action.status;
       return updated_state_error;
+    case UPDATE_MSG_STATUS:
+      let updated_state_msg = state;
+      updated_state_msg[action.section + '_msg'] = action.status;
+      return updated_state_msg;
   }
   return state;
 };

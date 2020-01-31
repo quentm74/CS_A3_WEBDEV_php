@@ -1,7 +1,7 @@
 import * as api from "../utils/api";
 import {loadingStatus} from "../utils/consts";
 import {batch} from "react-redux";
-import {updateErrorStatus, updateLoadingStatus} from "./status";
+import {updateErrorStatus, updateLoadingStatus, updateMsgStatus} from "./status";
 
 const prefix = "USER:";
 
@@ -30,6 +30,27 @@ export const signIn = (id, password) => {
     }, (error) => {
       dispatch(updateLoadingStatus('sign_in', loadingStatus.ERROR));
       dispatch(updateErrorStatus('sign_in', error.data.msg));
+    });
+  };
+};
+
+export const signUp = (first_name, last_name, address, password) => {
+  return (dispatch, _) => {
+    dispatch(updateLoadingStatus('sign_up', loadingStatus.LOADING));
+    dispatch(updateErrorStatus('sign_up', null));
+    api.post("/sign-up.php", {
+      first_name,
+      last_name,
+      address,
+      password,
+    }, (data) => {
+      batch(() => {
+        dispatch(updateLoadingStatus('sign_up', loadingStatus.SUCCESS));
+        dispatch(updateMsgStatus('sign_up', "User created, please save your ID : " + data.id));
+      });
+    }, (error) => {
+      dispatch(updateLoadingStatus('sign_up', loadingStatus.ERROR));
+      dispatch(updateErrorStatus('sign_up', error.data.msg));
     });
   };
 };
