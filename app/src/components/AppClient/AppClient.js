@@ -11,6 +11,9 @@ import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import {Cart, CART_HEIGHT} from "./Cart";
+import IconButton from "@material-ui/core/IconButton";
+import {Add, Remove} from "@material-ui/icons";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -24,6 +27,9 @@ const useStyles = makeStyles(theme => ({
       color: "inherit",
     },
   },
+  number: {
+    padding: theme.spacing(2),
+  }
 }));
 
 export const AppClient = () => {
@@ -66,6 +72,9 @@ export const AppClient = () => {
               <TableCell align="right">
                 Price
               </TableCell>
+              <TableCell align="center">
+                Quantity
+              </TableCell>
               <TableCell align="right"> </TableCell>
             </TableRow>
           </TableHead>
@@ -85,6 +94,17 @@ export const AppClient = () => {
                   </TableCell>
                   <TableCell align="right">
                     {book.price.toFixed(2)} €
+                  </TableCell>
+                  <TableCell align="center">
+                    <IconButton color="primary">
+                      <Remove/>
+                    </IconButton>
+                    <Typography variant="span" color="primary" className={classes.number}>
+                      34
+                    </Typography>
+                    <IconButton color="primary">
+                      <Add/>
+                    </IconButton>
                   </TableCell>
                   <TableCell align="right"> </TableCell>
                 </TableRow>
