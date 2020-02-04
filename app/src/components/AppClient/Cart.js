@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     bottom: 0,
     height: CART_HEIGHT,
     display: "flex",
-    justifyContent: "flex-start",
+    justifyContent: "flex-end",
     alignItems: "center",
     backgroundColor: theme.palette.primary.main,
   },
@@ -33,15 +33,23 @@ export const Cart = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  // const books = useSelector(state => state.books.books);
+  const books = useSelector(state => state.books.books);
+  const cart_ids = useSelector(state => state.cart.ids);
+
+  let total = 0;
+  books.map(book => {
+    let occurrences = 0;
+    for (let i = 0; i < cart_ids.length; ++i) {
+      if (cart_ids[i] === book.id)
+        occurrences++;
+    }
+    total += book.price * occurrences;
+  });
 
   return (
     <div className={classes.root}>
-      <Typography variant="h5" className={classes.title}>
-        Panier
-      </Typography>
       <Typography variant="h5" className={classes.price}>
-        34,00 €
+        {total.toFixed(2)} €
       </Typography>
       <Button variant="contained" color="secondary">
         Command
