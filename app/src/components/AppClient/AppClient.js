@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
   quantity: {
     display: "flex",
+    justifyContent: "center",
   },
   number: {
     padding: theme.spacing(2),
@@ -107,7 +108,7 @@ export const AppClient = () => {
                   <TableCell align="right">
                     {book.price.toFixed(2)} €
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell align="right">
                     <div className={classes.quantity}>
                       <IconButton color="primary" onClick={() => dispatch(removeBook(book.id))}>
                         <Remove/>
