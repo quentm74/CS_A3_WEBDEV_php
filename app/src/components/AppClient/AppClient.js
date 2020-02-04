@@ -14,6 +14,7 @@ import {Cart, CART_HEIGHT} from "./Cart";
 import IconButton from "@material-ui/core/IconButton";
 import {Add, Remove} from "@material-ui/icons";
 import Typography from "@material-ui/core/Typography";
+import {addBook, removeBook} from "../../redux/cart";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -27,9 +28,12 @@ const useStyles = makeStyles(theme => ({
       color: "inherit",
     },
   },
+  quantity: {
+    display: "flex",
+  },
   number: {
     padding: theme.spacing(2),
-  }
+  },
 }));
 
 export const AppClient = () => {
@@ -37,6 +41,9 @@ export const AppClient = () => {
   const dispatch = useDispatch();
 
   const books = useSelector(state => state.books.books);
+  const cart_ids = useSelector(state => state.cart.ids);
+
+  console.log("cart_ids", cart_ids.length);
 
   useEffect(() => {
     dispatch(loadBooks());
@@ -80,6 +87,11 @@ export const AppClient = () => {
           </TableHead>
           <TableBody>
             {books && books.map(book => {
+              let count = 0;
+              for (let i = 0; i < cart_ids.length; ++i) {
+                if (cart_ids[i] === book.id)
+                  count++;
+              }
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={book.id}>
                   <TableCell align="right"> </TableCell>
@@ -96,15 +108,17 @@ export const AppClient = () => {
                     {book.price.toFixed(2)} €
                   </TableCell>
                   <TableCell align="center">
-                    <IconButton color="primary">
-                      <Remove/>
-                    </IconButton>
-                    <Typography variant="span" color="primary" className={classes.number}>
-                      34
-                    </Typography>
-                    <IconButton color="primary">
-                      <Add/>
-                    </IconButton>
+                    <div className={classes.quantity}>
+                      <IconButton color="primary" onClick={() => dispatch(removeBook(book.id))}>
+                        <Remove/>
+                      </IconButton>
+                      <Typography variant="body1" color="primary" className={classes.number}>
+                        {count}
+                      </Typography>
+                      <IconButton color="primary" onClick={() => dispatch(addBook(book.id))}>
+                        <Add/>
+                      </IconButton>
+                    </div>
                   </TableCell>
                   <TableCell align="right"> </TableCell>
                 </TableRow>
