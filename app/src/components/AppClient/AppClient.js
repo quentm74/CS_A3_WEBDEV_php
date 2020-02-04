@@ -1,11 +1,8 @@
 import React, {useEffect} from "react";
 import "../../redux/store";
-import Container from "@material-ui/core/Container";
 import {useDispatch, useSelector} from "react-redux";
-import Typography from "@material-ui/core/Typography";
-import {TopBar} from "./TopBar";
+import {TopBar, TOPBAR_HEIGHT} from "./TopBar";
 import {loadBooks} from "../../redux/books";
-import Paper from "@material-ui/core/Paper";
 import TableContainer from "@material-ui/core/TableContainer";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Table from "@material-ui/core/Table";
@@ -13,13 +10,14 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
+import {Cart, CART_HEIGHT} from "./Cart";
 
 const useStyles = makeStyles(theme => ({
   container: {
-    maxHeight: 'calc(100vh - 64px)',
+    maxHeight: `calc(100vh - ${TOPBAR_HEIGHT} - ${CART_HEIGHT})`,
   },
   firstRow: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.light,
     color: theme.palette.secondary.main,
     "& th": {
       backgroundColor: "inherit",
@@ -95,6 +93,7 @@ export const AppClient = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Cart/>
     </React.Fragment>
   );
 };

@@ -10,9 +10,10 @@ import IconButton from "@material-ui/core/IconButton";
 import {MenuBook} from "@material-ui/icons";
 import {history} from "../../utils/history";
 
+export const TOPBAR_HEIGHT = "64px";
 const useStyles = makeStyles(theme => ({
   bar: {
-    height: 64,
+    height: TOPBAR_HEIGHT,
   },
   menuButton: {
     marginRight: theme.spacing(1),
