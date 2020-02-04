@@ -50,7 +50,8 @@ export const AppClient = () => {
     dispatch(loadBooks());
   }, []);
 
-  const maxNbOfDigits = books !== null ? books[books.length - 1]['id'].toString().length : 0;
+  console.log("books", books);
+  const maxNbOfDigits = (books !== null && books.length !== 0) ? books[books.length - 1]['id'].toString().length : 0;
   const displayId = (id) => {
     let display = '';
     for (let i = 0; i < maxNbOfDigits; i++) {

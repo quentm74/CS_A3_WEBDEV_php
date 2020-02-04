@@ -19,8 +19,8 @@ const loggingMiddleware = () => next => action => {
 export let store = createStore(combineReducers({
     router: connectRouter(history),
     user: persistReducer({key: 'user', storage}, userReducer),
-    books: persistReducer({key: 'books', storage}, booksReducer),
-    cart: persistReducer({key: 'cart', storage}, cartReducer),
+    books: booksReducer,
+    cart: cartReducer,
     status: statusReducer,
   }), composeWithDevTools(applyMiddleware(thunk, loggingMiddleware, routerMiddleware(history))),
 );
