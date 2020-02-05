@@ -41,9 +41,29 @@ export const save = () => {
     api.post("/commands.php", {
       userid: getState().user.id,
       booksids: getState().cart.ids,
+      valid: false,
     }, () => {
       dispatch(updateLoadingStatus('save_command', loadingStatus.SUCCESS));
       dispatch(saved());
+    }, (error) => {
+      dispatch(updateLoadingStatus('save_command', loadingStatus.ERROR));
+      dispatch(updateErrorStatus('save_command', error.data.msg));
+    });
+  };
+};
+
+export const valid = () => {
+  return (dispatch, getState) => {
+    dispatch(updateLoadingStatus('save_command', loadingStatus.LOADING));
+    dispatch(updateErrorStatus('save_command', null));
+    api.post("/commands.php", {
+      userid: getState().user.id,
+      booksids: getState().cart.ids,
+      valid: true,
+    }, () => {
+      dispatch(updateLoadingStatus('save_command', loadingStatus.SUCCESS));
+      dispatch(saved());
+      dispatch(cancel());
     }, (error) => {
       dispatch(updateLoadingStatus('save_command', loadingStatus.ERROR));
       dispatch(updateErrorStatus('save_command', error.data.msg));

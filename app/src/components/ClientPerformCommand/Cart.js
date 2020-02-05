@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import {cancel, save} from "../../redux/cart";
+import {cancel, save, valid} from "../../redux/cart";
 
 export const CART_HEIGHT = "70px";
 const useStyles = makeStyles(theme => ({
@@ -64,7 +64,7 @@ export const Cart = () => {
       <Button className={classes.button} variant="contained" color="default" onClick={() => dispatch(save())}>
         {changed ? "Save" : "Saved"}
       </Button>
-      <Button variant="contained" color="secondary">
+      <Button variant="contained" color="secondary" onClick={() => dispatch(valid())}>
         Valid command
       </Button>
     </div>
