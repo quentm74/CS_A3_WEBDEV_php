@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import {cancel} from "../../redux/cart";
 
 export const CART_HEIGHT = "70px";
 const useStyles = makeStyles(theme => ({
@@ -56,7 +57,7 @@ export const Cart = () => {
       <Typography variant="h5" className={classes.price}>
         {total.toFixed(2)} €
       </Typography>
-      <Button className={classes.button} variant="contained" color="default">
+      <Button className={classes.button} variant="contained" color="default" onClick={() => dispatch(cancel())}>
         Cancel
       </Button>
       <Button className={classes.button} variant="contained" color="default">

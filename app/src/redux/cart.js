@@ -17,6 +17,11 @@ export const removeBook = (id) => ({
   id: id,
 });
 
+const CANCEL = prefix + 'CANCEL';
+export const cancel = () => ({
+  type: CANCEL,
+});
+
 const initState = {
   ids: [],
 };
@@ -38,6 +43,11 @@ export const cartReducer = (state = initState, action) => {
       return {
         ...state,
         ids: ids,
+      };
+    case CANCEL:
+      return {
+        ...state,
+        ids: [],
       };
   }
   return state;
