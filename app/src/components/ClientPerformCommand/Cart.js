@@ -27,6 +27,11 @@ const useStyles = makeStyles(theme => ({
     color: "white",
     marginRight: theme.spacing(3),
   },
+  button: {
+    marginRight: theme.spacing(1),
+    backgroundColor: '#646464',
+    color: theme.palette.primary.contrastText,
+  }
 }));
 
 export const Cart = () => {
@@ -51,8 +56,14 @@ export const Cart = () => {
       <Typography variant="h5" className={classes.price}>
         {total.toFixed(2)} €
       </Typography>
+      <Button className={classes.button} variant="contained" color="default">
+        Cancel
+      </Button>
+      <Button className={classes.button} variant="contained" color="default">
+        Save
+      </Button>
       <Button variant="contained" color="secondary">
-        Command
+        Valid command
       </Button>
     </div>
   );
