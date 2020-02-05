@@ -63,15 +63,14 @@ const DefaultRoutes = () => (
 const ClientRoutes = () => (
   <React.Fragment>
     <Route path="/" component={ClientPerformCommand}/>
-    <Route path="/commands/" component={ClientPerformCommand}/>
-    <Route path="/commands/:id" component={ClientPerformCommand}/>
   </React.Fragment>
 );
 
 const BookSellerRoutes = () => (
   <React.Fragment>
     <Route path="/" component={ClientPerformCommand}/>
-    <Route path="/commands/" component={ClientPerformCommand}/>
+    <Route path="/clients" component={ClientPerformCommand}/>
+    <Route path="/commands" component={ClientPerformCommand}/>
     <Route path="/commands/:id" component={ClientPerformCommand}/>
   </React.Fragment>
 );
