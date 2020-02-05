@@ -17,11 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = new NewId();
     $id->id = $id_inserted;
     echo $id->toJson();
-} else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $userRepository = new UserRepository();
-    $id_inserted = $userRepository->insert_then_get_id("", "", "", "", 0);
-    echo "OK ";
-    echo $id_inserted;
 } else {
 //    http_response_code(404);
     CustomError::error_not_found();

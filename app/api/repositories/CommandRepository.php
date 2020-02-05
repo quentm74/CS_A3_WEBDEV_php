@@ -17,6 +17,24 @@ class CommandRepository extends Repository {
         return intval($result['qte']);
     }
 
+    public function save($userId, $bookIds) {
+        $stmt = self::$pdo->prepare("INSERT INTO commandes (idpersonne, date, validee) VALUES (:userid, NOW(), 0)");
+        $stmt->bindParam(':userid', $userId);
+        $stmt->execute();
+
+        $commandId = self::$pdo->lastInsertId();
+
+        foreach (array_count_values($bookIds) as $bookId => $qte) {
+            $stmt = self::$pdo->prepare("INSERT INTO lignescmd (idcmd, idouvrage, qte) VALUES (:commandid, :bookid, :qte)");
+            $stmt->bindParam(':commandid', $commandId);
+            $stmt->bindParam(':bookid', $bookId);
+            $stmt->bindParam(':qte', $qte);
+            $stmt->execute();
+        }
+    }
+
+
+
     public function get_all() {
         $stmt = self::$pdo->prepare("SELECT * FROM commandes");
         $stmt->execute();

@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import {cancel} from "../../redux/cart";
+import {cancel, save} from "../../redux/cart";
 
 export const CART_HEIGHT = "70px";
 const useStyles = makeStyles(theme => ({
@@ -41,6 +41,7 @@ export const Cart = () => {
 
   const books = useSelector(state => state.books.books);
   const cart_ids = useSelector(state => state.cart.ids);
+  const changed = useSelector(state => state.cart.changed);
 
   let total = 0;
   books.map(book => {
@@ -60,8 +61,8 @@ export const Cart = () => {
       <Button className={classes.button} variant="contained" color="default" onClick={() => dispatch(cancel())}>
         Reset
       </Button>
-      <Button className={classes.button} variant="contained" color="default">
-        Save
+      <Button className={classes.button} variant="contained" color="default" onClick={() => dispatch(save())}>
+        {changed ? "Save" : "Saved"}
       </Button>
       <Button variant="contained" color="secondary">
         Valid command

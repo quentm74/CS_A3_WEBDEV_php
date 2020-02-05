@@ -2,6 +2,7 @@ import * as api from "../utils/api";
 import {loadingStatus} from "../utils/consts";
 import {batch} from "react-redux";
 import {updateErrorStatus, updateLoadingStatus, updateMsgStatus} from "./status";
+import {get} from "../utils/api";
 
 const prefix = "CART:";
 
@@ -28,8 +29,31 @@ export const setQuantities = (ids) => ({
   ids: ids,
 });
 
+const SAVED = prefix + 'SAVED';
+export const saved = () => ({
+  type: SAVED,
+});
+
+export const save = () => {
+  return (dispatch, getState) => {
+    dispatch(updateLoadingStatus('save_command', loadingStatus.LOADING));
+    dispatch(updateErrorStatus('save_command', null));
+    api.post("/commands.php", {
+      userid: getState().user.id,
+      booksids: getState().cart.ids,
+    }, () => {
+      dispatch(updateLoadingStatus('save_command', loadingStatus.SUCCESS));
+      dispatch(saved());
+    }, (error) => {
+      dispatch(updateLoadingStatus('save_command', loadingStatus.ERROR));
+      dispatch(updateErrorStatus('save_command', error.data.msg));
+    });
+  };
+};
+
 const initState = {
   ids: [],
+  changed: true,
 };
 
 export const cartReducer = (state = initState, action) => {
@@ -39,6 +63,7 @@ export const cartReducer = (state = initState, action) => {
       ids.push(action.id);
       return {
         ...state,
+        changed: true,
         ids: ids,
       };
     case REMOVE_BOOK:
@@ -48,17 +73,24 @@ export const cartReducer = (state = initState, action) => {
       }
       return {
         ...state,
+        changed: true,
         ids: ids,
       };
     case CANCEL:
       return {
         ...state,
+        changed: true,
         ids: [],
       };
     case SET_QUANTITIES:
       return {
         ...state,
         ids: action.ids,
+      };
+    case SAVED:
+      return {
+        ...state,
+        changed: false,
       };
   }
   return state;

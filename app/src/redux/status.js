@@ -31,6 +31,8 @@ const initState = {
   sign_up_msg: null,
   load_books_loading: loadingStatus.NOT_STARTED,
   load_books_error: null,
+  save_command_loading: loadingStatus.NOT_STARTED,
+  save_command_error: null,
 };
 
 export const statusReducer = (state = initState, action) => {
