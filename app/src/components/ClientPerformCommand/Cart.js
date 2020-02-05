@@ -58,7 +58,7 @@ export const Cart = () => {
         {total.toFixed(2)} €
       </Typography>
       <Button className={classes.button} variant="contained" color="default" onClick={() => dispatch(cancel())}>
-        Cancel
+        Reset
       </Button>
       <Button className={classes.button} variant="contained" color="default">
         Save
