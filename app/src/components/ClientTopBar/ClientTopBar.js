@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import {signOut} from "../../redux/user";
 import {useDispatch, useSelector} from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
-import {Assignment, MenuBook} from "@material-ui/icons";
+import {MenuBook} from "@material-ui/icons";
 import {history} from "../../utils/history";
 
 export const TOPBAR_HEIGHT = "64px";
@@ -23,19 +23,11 @@ const useStyles = makeStyles(theme => ({
     cursor: "pointer",
     color: theme.palette.secondary.main,
   },
-  commands: {
-    backgroundColor: theme.palette.primary.light,
-    color: theme.palette.primary.contrastText,
-    marginRight: theme.spacing(2),
-  },
   name: {
     marginRight: theme.spacing(2),
   },
   spacing: {
     flexGrow: 1,
-  },
-  icon: {
-    marginRight: theme.spacing(1),
   },
 }));
 
@@ -56,10 +48,6 @@ export const ClientTopBar = () => {
         <Typography variant="h4" className={classes.title} onClick={() => history.push("/")}>Book shop</Typography>
         <div className={classes.spacing}></div>
         <Typography variant="h6" className={classes.name}>{first_name + " " + last_name}</Typography>
-        <Button className={classes.commands} variant="contained" onClick={() => {
-        }}>
-          <Assignment className={classes.icon}/> Past Commands
-        </Button>
         <Button variant="contained" color="secondary" onClick={() => dispatch(signOut())}>
           Sign out
         </Button>
