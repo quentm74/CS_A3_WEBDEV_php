@@ -1,12 +1,24 @@
 <?php
 
-class BookRepository extends Repository {
+class CommandRepository extends Repository {
     public function __construct() {
         parent::__construct();
     }
 
-    public function get_all($userId) {
-        $stmt = self::$pdo->prepare("SELECT * FROM ouvrages");
+    public function get_quantity($userId, $bookId) {
+        $stmt = self::$pdo->prepare("SELECT qte, MAX(date) as date FROM lignescmd NATURAL JOIN commandes WHERE idpersonne=:userid AND idouvrage=:bookid");
+        $stmt->bindParam(':userid', $userId);
+        $stmt->bindParam(':bookid', $bookId);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result == null || $result['qte'] == null) {
+            return 0;
+        }
+        return intval($result['qte']);
+    }
+
+    public function get_all() {
+        $stmt = self::$pdo->prepare("SELECT * FROM commandes");
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if ($result == null) {
@@ -20,11 +32,6 @@ class BookRepository extends Repository {
             $generated_book->title = utf8_encode($book['titre']);
             $generated_book->author = utf8_encode($book['auteur']);
             $generated_book->price = floatval($book['prix']);
-            if ($userId !== null) {
-                $generated_book->quantity = Repository::getCommandRepository()->get_quantity($userId, $generated_book->id);
-            } else {
-                $generated_book->quantity = null;
-            }
             array_push($books, $generated_book);
         }
         $booksPayload->books = $books;

@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $address = parameter($data, 'address');
     $password = parameter($data, 'password');
 
-    $userRepository = new UserRepository();
+    $userRepository = Repository::getUserRepository();
     $id_inserted = $userRepository->insert_then_get_id($first_name, $last_name, $address, $password, 0);
 
     header('Content-type: application/json');

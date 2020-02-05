@@ -5,4 +5,5 @@ class Book extends Payload {
     public $title;
     public $author;
     public $price;
+    public $quantity;
 }

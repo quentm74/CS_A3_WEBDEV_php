@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = parameter($data, 'id');
     $password = parameter($data, 'password');
 
-    $userRepository = new UserRepository();
+    $userRepository = Repository::getUserRepository();
     $user = $userRepository->get_by_id_and_password($id, $password);
 
     if ($user != null) {

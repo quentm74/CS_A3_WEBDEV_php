@@ -2,6 +2,7 @@ import * as api from "../utils/api";
 import {loadingStatus} from "../utils/consts";
 import {batch} from "react-redux";
 import {updateErrorStatus, updateLoadingStatus, updateMsgStatus} from "./status";
+import {setQuantities} from "./cart";
 
 const prefix = "BOOKS:";
 
@@ -12,13 +13,28 @@ const updateBooks = (books) => ({
 });
 
 export const loadBooks = () => {
-  return (dispatch, _) => {
+  return (dispatch, getState) => {
     dispatch(updateLoadingStatus('load_books', loadingStatus.LOADING));
     dispatch(updateErrorStatus('load_books', null));
-    api.get("/books.php", (data) => {
+    api.get("/books.php?userid=" + getState().user.id, (data) => {
       batch(() => {
         dispatch(updateLoadingStatus('load_books', loadingStatus.SUCCESS));
-        dispatch(updateBooks(data.books));
+
+        let ids = [];
+        const books = data.books.map(book => {
+          for (let i = 0; i < book.quantity; i++) {
+            ids.push(book.id);
+          }
+          return {
+            id: book.id,
+            title: book.title,
+            author: book.author,
+            price: book.price,
+          }
+        });
+
+        dispatch(updateBooks(books));
+        dispatch(setQuantities(ids));
       });
     }, (error) => {
       dispatch(updateLoadingStatus('load_books', loadingStatus.ERROR));

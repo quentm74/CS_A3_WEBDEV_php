@@ -22,6 +22,12 @@ export const cancel = () => ({
   type: CANCEL,
 });
 
+const SET_QUANTITIES = prefix + 'SET_QUANTITIES';
+export const setQuantities = (ids) => ({
+  type: SET_QUANTITIES,
+  ids: ids,
+});
+
 const initState = {
   ids: [],
 };
@@ -48,6 +54,11 @@ export const cartReducer = (state = initState, action) => {
       return {
         ...state,
         ids: [],
+      };
+    case SET_QUANTITIES:
+      return {
+        ...state,
+        ids: action.ids,
       };
   }
   return state;
