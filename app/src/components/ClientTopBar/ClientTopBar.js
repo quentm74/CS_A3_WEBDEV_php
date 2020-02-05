@@ -53,6 +53,7 @@ export const ClientTopBar = () => {
                     aria-label="menu">
           <MenuBook fontSize="large"/>
         </IconButton>
+        <Typography variant="h4" className={classes.title} onClick={() => history.push("/")}>Book shop</Typography>
         <div className={classes.spacing}></div>
         <Typography variant="h6" className={classes.name}>{first_name + " " + last_name}</Typography>
         <Button className={classes.commands} variant="contained" onClick={() => {
