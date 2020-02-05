@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import {signOut} from "../../redux/user";
 import {useDispatch, useSelector} from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
-import {MenuBook} from "@material-ui/icons";
+import {ExitToApp, MenuBook} from "@material-ui/icons";
 import {history} from "../../utils/history";
 
 export const TOPBAR_HEIGHT = "64px";
@@ -29,6 +29,9 @@ const useStyles = makeStyles(theme => ({
   spacing: {
     flexGrow: 1,
   },
+  icon: {
+    marginRight: theme.spacing(1),
+  },
 }));
 
 export const ClientTopBar = () => {
@@ -49,6 +52,7 @@ export const ClientTopBar = () => {
         <div className={classes.spacing}></div>
         <Typography variant="h6" className={classes.name}>{first_name + " " + last_name}</Typography>
         <Button variant="contained" color="secondary" onClick={() => dispatch(signOut())}>
+          <ExitToApp className={classes.icon}/>
           Sign out
         </Button>
       </Toolbar>

@@ -5,6 +5,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import {cancel, save, valid} from "../../redux/cart";
+import {Check, Clear, CreditCard, Save} from "@material-ui/icons";
 
 export const CART_HEIGHT = "70px";
 const useStyles = makeStyles(theme => ({
@@ -32,7 +33,10 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1),
     backgroundColor: '#646464',
     color: theme.palette.primary.contrastText,
-  }
+  },
+  icon: {
+    marginRight: theme.spacing(1),
+  },
 }));
 
 export const Cart = () => {
@@ -59,12 +63,24 @@ export const Cart = () => {
         {total.toFixed(2)} €
       </Typography>
       <Button className={classes.button} variant="contained" color="default" onClick={() => dispatch(cancel())}>
+        <Clear className={classes.icon}/>
         Reset
       </Button>
       <Button className={classes.button} variant="contained" color="default" onClick={() => dispatch(save())}>
-        {changed ? "Save" : "Saved"}
+        {changed ? (
+          <React.Fragment>
+            <Save className={classes.icon}/>
+            Save
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <Check className={classes.icon}/>
+            Saved
+          </React.Fragment>
+        )}
       </Button>
       <Button variant="contained" color="secondary" onClick={() => dispatch(valid())}>
+        <CreditCard className={classes.icon}/>
         Valid command
       </Button>
     </div>
