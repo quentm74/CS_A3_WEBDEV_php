@@ -15,11 +15,11 @@ class UserRepository extends Repository {
             return null;
         }
         $user = new User();
-        $user->id = $result['idpersonne'];
-        $user->first_name = $result['prenom'];
-        $user->last_name = $result['nom'];
-        $user->address = $result['adresse'];
-        $user->bookseller = $result['libraire'];
+        $user->id = utf8_encode($result['idpersonne']);
+        $user->first_name = utf8_encode($result['prenom']);
+        $user->last_name = utf8_encode($result['nom']);
+        $user->address = utf8_encode($result['adresse']);
+        $user->bookseller = utf8_encode($result['libraire']);
         return $user;
     }
 
