@@ -6,7 +6,7 @@ import {ThemeProvider as MuiThemeProvider} from '@material-ui/core/styles';
 import {theme} from "./utils/theme";
 import {history} from "./utils/history";
 import {Switch} from "react-router";
-import {AppClient} from "./components/AppClient/AppClient";
+import {ClientPerformCommand} from "./components/ClientPerformCommand/ClientPerformCommand";
 import {store, persistor} from "./redux/store";
 import {PersistGate} from 'redux-persist/integration/react'
 import {SignIn} from "./components/SignIn/SignIn";
@@ -62,16 +62,16 @@ const DefaultRoutes = () => (
 
 const ClientRoutes = () => (
   <React.Fragment>
-    <Route path="/" component={AppClient}/>
-    <Route path="/commands/" component={AppClient}/>
-    <Route path="/commands/:id" component={AppClient}/>
+    <Route path="/" component={ClientPerformCommand}/>
+    <Route path="/commands/" component={ClientPerformCommand}/>
+    <Route path="/commands/:id" component={ClientPerformCommand}/>
   </React.Fragment>
 );
 
 const BookSellerRoutes = () => (
   <React.Fragment>
-    <Route path="/" component={AppClient}/>
-    <Route path="/commands/" component={AppClient}/>
-    <Route path="/commands/:id" component={AppClient}/>
+    <Route path="/" component={ClientPerformCommand}/>
+    <Route path="/commands/" component={ClientPerformCommand}/>
+    <Route path="/commands/:id" component={ClientPerformCommand}/>
   </React.Fragment>
 );

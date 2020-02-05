@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import "../../redux/store";
 import {useDispatch, useSelector} from "react-redux";
-import {TopBar, TOPBAR_HEIGHT} from "./TopBar";
+import {ClientTopBar, TOPBAR_HEIGHT} from "../ClientTopBar/ClientTopBar";
 import {loadBooks} from "../../redux/books";
 import TableContainer from "@material-ui/core/TableContainer";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const AppClient = () => {
+export const ClientPerformCommand = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -63,7 +63,7 @@ export const AppClient = () => {
 
   return (
     <React.Fragment>
-      <TopBar/>
+      <ClientTopBar/>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
