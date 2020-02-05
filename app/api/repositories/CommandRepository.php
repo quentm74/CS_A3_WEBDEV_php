@@ -18,6 +18,15 @@ class CommandRepository extends Repository {
     }
 
     public function save($userId, $bookIds) {
+        // disable foreign_key_checks because the database does not delete on cascade...
+        $stmt = self::$pdo->prepare("
+            SET FOREIGN_KEY_CHECKS = 0;
+            DELETE FROM commandes WHERE validee=0 AND idpersonne=:userid;
+            SET FOREIGN_KEY_CHECKS = 1;
+        ");
+        $stmt->bindParam(':userid', $userId);
+        $stmt->execute();
+
         $stmt = self::$pdo->prepare("INSERT INTO commandes (idpersonne, date, validee) VALUES (:userid, NOW(), 0)");
         $stmt->bindParam(':userid', $userId);
         $stmt->execute();
