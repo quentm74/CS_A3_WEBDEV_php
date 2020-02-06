@@ -1,11 +1,9 @@
 import React, {useState} from "react";
 import "../../redux/store";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Button from "@material-ui/core/Button";
 import {Add, Clear} from "@material-ui/icons";
-import TextField from "@material-ui/core/TextField";
-import {signIn} from "../../redux/user";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Input from "@material-ui/core/Input";
 import {saveBook} from "../../redux/books";
@@ -17,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3),
     boxSizing: "border-box",
     height: ADD_BOOK_HEIGHT,
-    backgroundColor: "#d0d0d0",
+    backgroundColor: "#eee",
   },
   form: {
     display: "flex",
