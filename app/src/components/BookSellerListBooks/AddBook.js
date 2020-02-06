@@ -47,7 +47,7 @@ export const AddBook = () => {
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
-  const [price , setPrice] = useState(0);
+  const [price , setPrice] = useState("");
 
   return (
     <div className={classes.root}>
@@ -61,11 +61,11 @@ export const AddBook = () => {
           name="title"
           id="title"
           size="small"
-          placeholder="Title"
           autoFocus
           className={`${classes.input} ${classes.input_max_width}`}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          startAdornment={<InputAdornment position="start">Title : </InputAdornment>}
         />
         <Input
           margin="none"
@@ -73,10 +73,10 @@ export const AddBook = () => {
           name="author"
           id="author"
           size="small"
-          placeholder="Authors"
           className={`${classes.input} ${classes.input_max_width}`}
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
+          startAdornment={<InputAdornment position="start">Authors : </InputAdornment>}
         />
         <Input
           margin="none"
@@ -84,19 +84,20 @@ export const AddBook = () => {
           name="price"
           id="price"
           size="small"
-          placeholder="Price"
           className={classes.input}
           value={price}
           onChange={(e) => {
-            if (parseInt(e.target.value, 10) === e.target.value) { // if int
-              setPrice(parseInt(e.target.value, 10));
+            if (parseInt(e.target.value) == e.target.value) { // if int
+              setPrice(parseInt(e.target.value));
             }
           }}
+          startAdornment={<InputAdornment position="start">Price : </InputAdornment>}
           endAdornment={<InputAdornment position="end">€</InputAdornment>}
         />
         <Button variant="contained" color="primary" className={classes.btn} onClick={() => {
           setTitle("");
           setAuthor("");
+          setPrice("");
         }}>
           <Clear className={classes.icon}/>
           Clear
