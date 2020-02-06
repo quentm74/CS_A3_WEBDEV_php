@@ -23,6 +23,28 @@ class UserRepository extends Repository {
         return $user;
     }
 
+    public function get_all() {
+        $stmt = self::$pdo->prepare("SELECT * FROM personnes");
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($result == null) {
+            return null;
+        }
+        $usersPayload = new Users();
+        $users = [];
+        foreach ($result as $user) {
+            $generated_user = new User();
+            $generated_user->id = intval($user['idpersonne']);
+            $generated_user->first_name = utf8_encode($user['prenom']);
+            $generated_user->last_name = utf8_encode($user['nom']);
+            $generated_user->address = utf8_encode($user['adresse']);
+            $generated_user->bookseller = intval($user['libraire']);
+            array_push($users, $generated_user);
+        }
+        $usersPayload->users = $users;
+        return $usersPayload;
+    }
+
     public function insert_then_get_id($first_name, $last_name, $address, $password, $bookseller) {
         $stmt = self::$pdo->prepare("INSERT INTO personnes (nom, prenom, adresse, password, libraire) VALUES (:last_name, :first_name, :address, :password, :bookseller);");
         $stmt->bindParam(':last_name', $last_name);

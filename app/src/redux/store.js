@@ -9,6 +9,7 @@ import storage from 'redux-persist/lib/storage'
 import {statusReducer} from "./status";
 import {booksReducer} from "./books";
 import {cartReducer} from "./cart";
+import {usersReducer} from "./users";
 
 const loggingMiddleware = () => next => action => {
   const result = next(action);
@@ -22,6 +23,7 @@ export let store = createStore(combineReducers({
     books: booksReducer,
     cart: cartReducer,
     status: statusReducer,
+    users: usersReducer,
   }), composeWithDevTools(applyMiddleware(thunk, loggingMiddleware, routerMiddleware(history))),
 );
 
