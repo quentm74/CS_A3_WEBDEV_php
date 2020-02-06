@@ -58,26 +58,51 @@ class CommandRepository extends Repository {
         }
     }
 
-
-
     public function get_all() {
-        $stmt = self::$pdo->prepare("SELECT * FROM commandes");
+        $stmt = self::$pdo->prepare("SELECT * FROM commandes NATURAL JOIN personnes");
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if ($result == null) {
-            return null;
+            return new Commands();
         }
-        $booksPayload = new Books();
-        $books = [];
-        foreach ($result as $book) {
-            $generated_book = new Book();
-            $generated_book->id = intval($book['idouvrage']);
-            $generated_book->title = utf8_encode($book['titre']);
-            $generated_book->author = utf8_encode($book['auteur']);
-            $generated_book->price = floatval($book['prix']);
-            array_push($books, $generated_book);
+        $commandsPayload = new Commands();
+        $commands = [];
+        foreach ($result as $command) {
+            $generated_command = new Command();
+
+            $generated_user = new User();
+            $generated_user->id = intval($command['idpersonne']);
+            $generated_user->first_name = utf8_encode($command['prenom']);
+            $generated_user->last_name = utf8_encode($command['nom']);
+            $generated_user->address = utf8_encode($command['adresse']);
+            $generated_user->bookseller = intval($command['libraire']);
+            $generated_command->user = $generated_user;
+
+            $generated_command->id = intval($command['idcmd']);
+            $generated_command->date = utf8_encode($command['date']);
+            $generated_command->validated = intval($command['validee']);
+
+            $stmt = self::$pdo->prepare("SELECT * FROM lignescmd NATURAL JOIN ouvrages WHERE idcmd=:idcmd");
+            $stmt->bindParam(':idcmd', $generated_command->id);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $books = [];
+            if ($result != null) {
+                foreach ($result as $book) {
+                    $generated_book = new Book();
+                    $generated_book->id = intval($book['idouvrage']);
+                    $generated_book->title = utf8_encode($book['titre']);
+                    $generated_book->author = utf8_encode($book['auteur']);
+                    $generated_book->price = floatval($book['prix']);
+                    $generated_book->quantity = intval($book['qte']);
+                    array_push($books, $generated_book);
+                }
+            }
+            $generated_command->books = $books;
+
+            array_push($commands, $generated_command);
         }
-        $booksPayload->books = $books;
-        return $booksPayload;
+        $commandsPayload->commands = $commands;
+        return $commandsPayload;
     }
 }

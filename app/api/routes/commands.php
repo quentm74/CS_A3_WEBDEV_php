@@ -2,7 +2,13 @@
 include '/app/api/autoload.php';
 include '/app/api/tools.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $commandRepository = Repository::getCommandRepository();
+    $commands = $commandRepository->get_all();
+
+    header('Content-type: application/json');
+    echo $commands->toJson();
+} else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'));
 
     $userId = parameter($data, 'userid');

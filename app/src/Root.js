@@ -13,6 +13,7 @@ import {SignIn} from "./components/SignIn/SignIn";
 import {SignUp} from "./components/SignUp/SignUp";
 import {BookSellerListBooks} from "./components/BookSellerListBooks/BookSellerListBooks";
 import {BookSellerListUsers} from "./components/BookSellerListUsers/BookSellerListUsers";
+import {BookSellerListCommands} from "./components/BookSellerListCommands/BookSellerListCommands";
 
 export default () => {
   return (
@@ -72,8 +73,7 @@ const BookSellerRoutes = () => (
   <React.Fragment>
     <Route path="/books" component={BookSellerListBooks}/>
     <Route path="/users" component={BookSellerListUsers}/>
-    <Route path="/commands" component={ClientPerformCommand}/>
-    <Route path="/commands/:id" component={ClientPerformCommand}/>
+    <Route path="/commands" component={BookSellerListCommands}/>
     <Route exact path="/" component={BookSellerListBooks}/>
   </React.Fragment>
 );

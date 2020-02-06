@@ -10,6 +10,7 @@ import {statusReducer} from "./status";
 import {booksReducer} from "./books";
 import {cartReducer} from "./cart";
 import {usersReducer} from "./users";
+import {commandsReducer} from "./commands";
 
 const loggingMiddleware = () => next => action => {
   const result = next(action);
@@ -24,6 +25,7 @@ export let store = createStore(combineReducers({
     cart: cartReducer,
     status: statusReducer,
     users: usersReducer,
+    commands: commandsReducer,
   }), composeWithDevTools(applyMiddleware(thunk, loggingMiddleware, routerMiddleware(history))),
 );
 
