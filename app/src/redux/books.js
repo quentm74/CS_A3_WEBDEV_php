@@ -16,7 +16,7 @@ export const loadBooks = () => {
   return (dispatch, getState) => {
     dispatch(updateLoadingStatus('load_books', loadingStatus.LOADING));
     dispatch(updateErrorStatus('load_books', null));
-    api.get("/books.php?userid=" + getState().user.id, (data) => {
+    api.http_get("/books.php?userid=" + getState().user.id, (data) => {
       batch(() => {
         dispatch(updateLoadingStatus('load_books', loadingStatus.SUCCESS));
 
@@ -47,7 +47,7 @@ export const loadAllBooks = () => {
   return (dispatch, _) => {
     dispatch(updateLoadingStatus('load_books', loadingStatus.LOADING));
     dispatch(updateErrorStatus('load_books', null));
-    api.get("/books.php", (data) => {
+    api.http_get("/books.php", (data) => {
       batch(() => {
         dispatch(updateLoadingStatus('load_books', loadingStatus.SUCCESS));
 
@@ -73,7 +73,7 @@ export const saveBook = (title, authors, price) => {
   return (dispatch, _) => {
     dispatch(updateLoadingStatus('save_book', loadingStatus.LOADING));
     dispatch(updateErrorStatus('save_book', null));
-    api.post("/books.php", {
+    api.http_post("/books.php", {
       title: title,
       authors: authors,
       price: parseInt(price).toFixed(2),
@@ -85,6 +85,24 @@ export const saveBook = (title, authors, price) => {
     }, (error) => {
       dispatch(updateLoadingStatus('save_book', loadingStatus.ERROR));
       dispatch(updateErrorStatus('save_book', error.data.msg));
+    });
+  };
+};
+
+export const deleteBook = (id) => {
+  return (dispatch, _) => {
+    dispatch(updateLoadingStatus('delete_book', loadingStatus.LOADING));
+    dispatch(updateErrorStatus('save_book', null));
+    api.http_delete("/books.php", {
+      id: id,
+    }, () => {
+      batch(() => {
+        dispatch(updateLoadingStatus('delete_book', loadingStatus.SUCCESS));
+        dispatch(loadAllBooks()); // refresh list
+      });
+    }, (error) => {
+      dispatch(updateLoadingStatus('delete_book', loadingStatus.ERROR));
+      dispatch(updateErrorStatus('delete_book', error.data.msg));
     });
   };
 };

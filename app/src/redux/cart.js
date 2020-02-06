@@ -2,7 +2,7 @@ import * as api from "../utils/api";
 import {loadingStatus} from "../utils/consts";
 import {batch} from "react-redux";
 import {updateErrorStatus, updateLoadingStatus, updateMsgStatus} from "./status";
-import {get} from "../utils/api";
+import {http_get} from "../utils/api";
 
 const prefix = "CART:";
 
@@ -38,7 +38,7 @@ export const save = () => {
   return (dispatch, getState) => {
     dispatch(updateLoadingStatus('save_command', loadingStatus.LOADING));
     dispatch(updateErrorStatus('save_command', null));
-    api.post("/commands.php", {
+    api.http_post("/commands.php", {
       userid: getState().user.id,
       booksids: getState().cart.ids,
       valid: false,
@@ -56,7 +56,7 @@ export const valid = () => {
   return (dispatch, getState) => {
     dispatch(updateLoadingStatus('save_command', loadingStatus.LOADING));
     dispatch(updateErrorStatus('save_command', null));
-    api.post("/commands.php", {
+    api.http_post("/commands.php", {
       userid: getState().user.id,
       booksids: getState().cart.ids,
       valid: true,

@@ -19,7 +19,7 @@ export const signIn = (id, password) => {
   return (dispatch, _) => {
     dispatch(updateLoadingStatus('sign_in', loadingStatus.LOADING));
     dispatch(updateErrorStatus('sign_in', null));
-    api.post("/sign-in.php", {
+    api.http_post("/sign-in.php", {
       id,
       password,
     }, (data) => {
@@ -38,7 +38,7 @@ export const signUp = (first_name, last_name, address, password) => {
   return (dispatch, _) => {
     dispatch(updateLoadingStatus('sign_up', loadingStatus.LOADING));
     dispatch(updateErrorStatus('sign_up', null));
-    api.post("/sign-up.php", {
+    api.http_post("/sign-up.php", {
       first_name,
       last_name,
       address,

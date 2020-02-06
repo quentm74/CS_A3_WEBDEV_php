@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import "../../redux/store";
 import {useDispatch, useSelector} from "react-redux";
-import {loadAllBooks} from "../../redux/books";
+import {deleteBook, loadAllBooks} from "../../redux/books";
 import TableContainer from "@material-ui/core/TableContainer";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Table from "@material-ui/core/Table";
@@ -11,6 +11,8 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import {BookSellerTopBar, TOPBAR_HEIGHT} from "../BookSellerTopBar/BookSellerTopBar";
 import {ADD_BOOK_HEIGHT, AddBook} from "./AddBook";
+import IconButton from "@material-ui/core/IconButton";
+import {Delete} from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -67,6 +69,9 @@ export const BookSellerListBooks = () => {
               <TableCell align="right">
                 Price
               </TableCell>
+              <TableCell align="right">
+                Actions
+              </TableCell>
               <TableCell align="right"> </TableCell>
             </TableRow>
           </TableHead>
@@ -86,6 +91,11 @@ export const BookSellerListBooks = () => {
                   </TableCell>
                   <TableCell align="right">
                     {book.price.toFixed(2)} €
+                  </TableCell>
+                  <TableCell align="right">
+                    <IconButton onClick={() => dispatch(deleteBook(book.id))}>
+                      <Delete/>
+                    </IconButton>
                   </TableCell>
                   <TableCell align="right"> </TableCell>
                 </TableRow>

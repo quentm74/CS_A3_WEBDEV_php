@@ -33,6 +33,8 @@ const initState = {
   load_books_error: null,
   save_book_loading: loadingStatus.NOT_STARTED,
   save_book_error: null,
+  delete_book_loading: loadingStatus.NOT_STARTED,
+  delete_book_error: null,
   save_command_loading: loadingStatus.NOT_STARTED,
   save_command_error: null,
 };

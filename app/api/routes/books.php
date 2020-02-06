@@ -19,6 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $bookRepository = Repository::getBookRepository();
     $bookRepository->add($title, $authors, $price);
+} else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    $data = json_decode(file_get_contents('php://input'));
+
+    $id = parameter($data, 'id');
+
+    $bookRepository = Repository::getBookRepository();
+    $bookRepository->remove($id);
 } else {
     CustomError::error_not_found();
 }

@@ -38,4 +38,10 @@ class BookRepository extends Repository {
         $stmt->bindParam(':price', $price);
         $stmt->execute();
     }
+
+    public function remove($id) {
+        $stmt = self::$pdo->prepare("DELETE FROM ouvrages WHERE idouvrage=:id");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+    }
 }
