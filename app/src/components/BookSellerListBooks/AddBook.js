@@ -8,6 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import {signIn} from "../../redux/user";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Input from "@material-ui/core/Input";
+import {saveBook} from "../../redux/books";
 
 export const ADD_BOOK_HEIGHT = "90px";
 const useStyles = makeStyles(theme => ({
@@ -46,13 +47,13 @@ export const AddBook = () => {
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
-  const [price , setPrice] = useState(null);
+  const [price , setPrice] = useState(0);
 
   return (
     <div className={classes.root}>
       <form className={classes.form} noValidate onSubmit={(e) => {
         e.preventDefault();
-        console.log("ok");
+        dispatch(saveBook(title, author, price));
       }}>
         <Input
           margin="none"

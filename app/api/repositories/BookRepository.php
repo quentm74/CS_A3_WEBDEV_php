@@ -30,4 +30,12 @@ class BookRepository extends Repository {
         $booksPayload->books = $books;
         return $booksPayload;
     }
+
+    public function add($title, $authors, $price) {
+        $stmt = self::$pdo->prepare("INSERT INTO ouvrages (titre, auteur, prix) VALUES (:title, :author, :price)");
+        $stmt->bindParam(':title', $title);
+        $stmt->bindParam(':author', $authors);
+        $stmt->bindParam(':price', $price);
+        $stmt->execute();
+    }
 }

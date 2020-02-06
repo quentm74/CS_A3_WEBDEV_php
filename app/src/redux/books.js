@@ -69,6 +69,26 @@ export const loadAllBooks = () => {
   };
 };
 
+export const saveBook = (title, authors, price) => {
+  return (dispatch, _) => {
+    dispatch(updateLoadingStatus('save_book', loadingStatus.LOADING));
+    dispatch(updateErrorStatus('save_book', null));
+    api.post("/books.php", {
+      title: title,
+      authors: authors,
+      price: parseInt(price).toFixed(2),
+    }, () => {
+      batch(() => {
+        dispatch(updateLoadingStatus('save_book', loadingStatus.SUCCESS));
+        dispatch(loadAllBooks()); // refresh list
+      });
+    }, (error) => {
+      dispatch(updateLoadingStatus('save_book', loadingStatus.ERROR));
+      dispatch(updateErrorStatus('save_book', error.data.msg));
+    });
+  };
+};
+
 const initState = {
   books: [],
 };
