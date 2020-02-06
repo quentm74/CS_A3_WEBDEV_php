@@ -57,21 +57,22 @@ const Switcher = () => {
 const DefaultRoutes = () => (
   <React.Fragment>
     <Route path="/sign-up" component={SignUp}/>
-    <Route exact={true} path="/" component={SignIn}/>
+    <Route exact path="/" component={SignIn}/>
   </React.Fragment>
 );
 
 const ClientRoutes = () => (
   <React.Fragment>
-    <Route path="/" component={ClientPerformCommand}/>
+    <Route exact path="/" component={ClientPerformCommand}/>
   </React.Fragment>
 );
 
 const BookSellerRoutes = () => (
   <React.Fragment>
-    <Route path="/" component={BookSellerListBooks}/>
-    <Route path="/clients" component={ClientPerformCommand}/>
+    <Route path="/books" component={BookSellerListBooks}/>
+    <Route path="/users" component={ClientPerformCommand}/>
     <Route path="/commands" component={ClientPerformCommand}/>
     <Route path="/commands/:id" component={ClientPerformCommand}/>
+    <Route exact path="/" component={BookSellerListBooks}/>
   </React.Fragment>
 );

@@ -23,8 +23,15 @@ const useStyles = makeStyles(theme => ({
     cursor: "pointer",
     color: theme.palette.secondary.main,
   },
+  subtitle: {
+    cursor: "pointer",
+    marginLeft: theme.spacing(2),
+  },
   name: {
     marginRight: theme.spacing(2),
+  },
+  little_spacing: {
+    marginRight: theme.spacing(6),
   },
   spacing: {
     flexGrow: 1,
@@ -48,7 +55,11 @@ export const BookSellerTopBar = () => {
                     aria-label="menu">
           <MenuBook fontSize="large"/>
         </IconButton>
-        <Typography variant="h4" className={classes.title} onClick={() => history.push("/")}>Book shop - Book seller</Typography>
+        <Typography variant="h4" className={classes.title} onClick={() => history.push("/")}>Book shop - Admin</Typography>
+        <div className={classes.little_spacing}></div>
+        <Typography variant="subtitle1" className={classes.subtitle} onClick={() => history.push("/books")}>BOOKS</Typography>
+        <Typography variant="subtitle1" className={classes.subtitle} onClick={() => history.push("/users")}>USERS</Typography>
+        <Typography variant="subtitle1" className={classes.subtitle} onClick={() => history.push("/commands")}>COMMANDS</Typography>
         <div className={classes.spacing}></div>
         <Typography variant="h6" className={classes.name}>{first_name + " " + last_name}</Typography>
         <Button variant="contained" color="secondary" onClick={() => dispatch(signOut())}>
