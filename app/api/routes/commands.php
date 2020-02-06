@@ -21,6 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     } else {
         $commandRepository->saveValidatedCommand($userId, $booksIds);
     }
+} else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    $data = json_decode(file_get_contents('php://input'));
+
+    $id = parameter($data, 'id');
+
+    $commandRepository = Repository::getCommandRepository();
+    $commandRepository->remove($id);
 } else {
     CustomError::error_not_found();
 }

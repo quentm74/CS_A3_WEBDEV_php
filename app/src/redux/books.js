@@ -92,7 +92,7 @@ export const saveBook = (title, authors, price) => {
 export const deleteBook = (id) => {
   return (dispatch, _) => {
     dispatch(updateLoadingStatus('delete_book', loadingStatus.LOADING));
-    dispatch(updateErrorStatus('save_book', null));
+    dispatch(updateErrorStatus('delete_book', null));
     api.http_delete("/books.php", {
       id: id,
     }, () => {

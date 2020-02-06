@@ -10,13 +10,14 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import {BookSellerTopBar, TOPBAR_HEIGHT} from "../BookSellerTopBar/BookSellerTopBar";
 import {Assignment, Check, Clear, Delete, ListAlt, MenuBook, Person} from "@material-ui/icons";
-import {loadAllCommands, selectCommand} from "../../redux/commands";
+import {deleteCommand, loadAllCommands, selectCommand} from "../../redux/commands";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
+import {deleteBook} from "../../redux/books";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -185,7 +186,7 @@ export const BookSellerListCommands = () => {
                   </TableContainer>
                 ) : (
                   <Typography>
-                    None
+                    No book in current command
                   </Typography>
                 )}
               </Grid>
@@ -256,6 +257,9 @@ export const BookSellerListCommands = () => {
                       setOpen(true);
                     }}>
                       <ListAlt/>
+                    </IconButton>
+                    <IconButton onClick={() => dispatch(deleteCommand(command.id))}>
+                      <Delete/>
                     </IconButton>
                   </TableCell>
                   <TableCell align="right"> </TableCell>

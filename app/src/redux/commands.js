@@ -3,6 +3,7 @@ import {loadingStatus} from "../utils/consts";
 import {batch} from "react-redux";
 import {updateErrorStatus, updateLoadingStatus, updateMsgStatus} from "./status";
 import {setQuantities} from "./cart";
+import {loadAllBooks} from "./books";
 
 const prefix = "COMMANDS:";
 
@@ -30,6 +31,24 @@ export const loadAllCommands = () => {
     }, (error) => {
       dispatch(updateLoadingStatus('load_commands', loadingStatus.ERROR));
       dispatch(updateErrorStatus('load_commands', error.data.msg));
+    });
+  };
+};
+
+export const deleteCommand = (id) => {
+  return (dispatch, _) => {
+    dispatch(updateLoadingStatus('delete_command', loadingStatus.LOADING));
+    dispatch(updateErrorStatus('delete_command', null));
+    api.http_delete("/commands.php", {
+      id: id,
+    }, () => {
+      batch(() => {
+        dispatch(updateLoadingStatus('delete_command', loadingStatus.SUCCESS));
+        dispatch(loadAllCommands()); // refresh list
+      });
+    }, (error) => {
+      dispatch(updateLoadingStatus('delete_command', loadingStatus.ERROR));
+      dispatch(updateErrorStatus('delete_command', error.data.msg));
     });
   };
 };

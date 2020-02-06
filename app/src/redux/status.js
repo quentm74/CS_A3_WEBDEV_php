@@ -39,6 +39,8 @@ const initState = {
   load_commands_error: null,
   save_command_loading: loadingStatus.NOT_STARTED,
   save_command_error: null,
+  delete_command_loading: loadingStatus.NOT_STARTED,
+  delete_command_error: null,
   load_users_loading: loadingStatus.NOT_STARTED,
   load_users_error: null,
 };

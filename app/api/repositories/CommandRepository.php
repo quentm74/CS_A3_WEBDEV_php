@@ -105,4 +105,14 @@ class CommandRepository extends Repository {
         $commandsPayload->commands = $commands;
         return $commandsPayload;
     }
+
+    public function remove($id) {
+        // no delete on cascade...
+        $stmt = self::$pdo->prepare("
+            SET FOREIGN_KEY_CHECKS = 0;
+            DELETE FROM commandes WHERE idcmd=:id;
+            SET FOREIGN_KEY_CHECKS = 1;");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+    }
 }
