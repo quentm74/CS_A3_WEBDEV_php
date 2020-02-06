@@ -11,6 +11,7 @@ import {store, persistor} from "./redux/store";
 import {PersistGate} from 'redux-persist/integration/react'
 import {SignIn} from "./components/SignIn/SignIn";
 import {SignUp} from "./components/SignUp/SignUp";
+import {BookSellerListBooks} from "./components/BookSellerListBooks/BookSellerListBooks";
 
 export default () => {
   return (
@@ -68,7 +69,7 @@ const ClientRoutes = () => (
 
 const BookSellerRoutes = () => (
   <React.Fragment>
-    <Route path="/" component={ClientPerformCommand}/>
+    <Route path="/" component={BookSellerListBooks}/>
     <Route path="/clients" component={ClientPerformCommand}/>
     <Route path="/commands" component={ClientPerformCommand}/>
     <Route path="/commands/:id" component={ClientPerformCommand}/>

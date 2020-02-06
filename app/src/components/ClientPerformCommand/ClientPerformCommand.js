@@ -44,13 +44,10 @@ export const ClientPerformCommand = () => {
   const books = useSelector(state => state.books.books);
   const cart_ids = useSelector(state => state.cart.ids);
 
-  console.log("cart_ids", cart_ids.length);
-
   useEffect(() => {
     dispatch(loadBooks());
   }, []);
 
-  console.log("books", books);
   const maxNbOfDigits = (books !== null && books.length !== 0) ? books[books.length - 1]['id'].toString().length : 0;
   const displayId = (id) => {
     let display = '';
