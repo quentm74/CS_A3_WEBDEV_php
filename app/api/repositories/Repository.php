@@ -10,7 +10,8 @@ abstract class Repository {
     public function __construct() {
         if (self::$pdo == null) { // should init pdo
             try {
-                self::$pdo = new PDO('mysql:host=mariadb;dbname=bdlibrairie', 'root', 'pass');
+//                self::$pdo = new PDO('mysql:host=mariadb;dbname=bdlibrairie', 'root', 'pass');
+                self::$pdo = new PDO('mysql:host=localhost;dbname=devweb', 'devweb', 'devweb');
             } catch (PDOException $e) {
                 CustomError::error_connection_database($e);
             }
