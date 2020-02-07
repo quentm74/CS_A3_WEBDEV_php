@@ -24,10 +24,8 @@ export const signIn = (id, password) => {
       id,
       password,
     }, (data) => {
-      batch(() => {
         dispatch(updateLoadingStatus('sign_in', loadingStatus.SUCCESS));
-        dispatch(updateUser(data.id, data.first_name, data.last_name, data.address, data.bookseller));
-      });
+        dispatch(updateUser(data.id, data.first_name, data.last_name, data.address, data.bookseller === '1'));
     }, (error) => {
       dispatch(updateLoadingStatus('sign_in', loadingStatus.ERROR));
       dispatch(updateErrorStatus('sign_in', error.data.msg));

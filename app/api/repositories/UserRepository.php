@@ -14,7 +14,7 @@ class UserRepository extends Repository {
         if ($result == null) {
             return null;
         }
-        $user = new Command();
+        $user = new User();
         $user->id = utf8_encode($result['idpersonne']);
         $user->first_name = utf8_encode($result['prenom']);
         $user->last_name = utf8_encode($result['nom']);
@@ -30,10 +30,10 @@ class UserRepository extends Repository {
         if ($result == null) {
             return null;
         }
-        $usersPayload = new Commands();
+        $usersPayload = new Users();
         $users = [];
         foreach ($result as $user) {
-            $generated_user = new Command();
+            $generated_user = new User();
             $generated_user->id = intval($user['idpersonne']);
             $generated_user->first_name = utf8_encode($user['prenom']);
             $generated_user->last_name = utf8_encode($user['nom']);
