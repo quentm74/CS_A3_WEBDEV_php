@@ -2,6 +2,7 @@ import * as api from "../utils/api";
 import {loadingStatus} from "../utils/consts";
 import {batch} from "react-redux";
 import {updateErrorStatus, updateLoadingStatus, updateMsgStatus} from "./status";
+import {history} from "../utils/history";
 
 const prefix = "USER:";
 
@@ -58,6 +59,7 @@ export const signUp = (first_name, last_name, address, password) => {
 export const signOut = () => {
   return (dispatch, _) => {
     dispatch(updateUser(initState.id, initState.first_name, initState.last_name, initState.address, initState.bookseller));
+    history.push("/");
   };
 };
 
