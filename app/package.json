@@ -15,7 +15,7 @@
     "@material-ui/icons": "^4.5.1",
     "@material-ui/lab": "^4.0.0-alpha.40",
     "app": "^0.1.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "connected-react-router": "^6.6.1",
     "postcss-scss": "^2.0.0",
     "react": "^16.12.0",
